@@ -263,9 +263,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9654a879697e3044a84e5bc03afdaa70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemAnker: {fileID: 3816426118842232710}
+  Multiplayer: {fileID: 0}
+  _uidString: 5af1755d-fb21-48ac-9c9b-6ef23f240928
+  Reliability: 1
+  LocalMethodBehavior: 1
+  _itemAnchor: {fileID: 3816426118842232710}
   _isBigItemCollected: 0
   _isItemInTriggerZone: 0
+  avatar: {fileID: 8390506433742108234}
 --- !u!1 &3253789222952902027
 GameObject:
   m_ObjectHideFlags: 0
