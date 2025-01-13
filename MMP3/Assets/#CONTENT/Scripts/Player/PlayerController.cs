@@ -29,6 +29,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private ItemLogicOnPlayer _itemLogicOnPlayer;
 
 
+    
+    void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
 
     void Start()
     {
@@ -41,9 +46,10 @@ public class PlayerController : MonoBehaviour
         playerCamera = Camera.main;
         playerCamera.transform.position = new Vector3(transform.position.x, transform.position.y + cameraYOffset, transform.position.z);
         playerCamera.transform.SetParent(transform);
-        // Lock cursor
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+
+        // // Lock cursor
+        // Cursor.lockState = CursorLockMode.Locked;
+        // Cursor.visible = false;
     }
 
     void Update()

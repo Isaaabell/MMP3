@@ -95,12 +95,12 @@ namespace Alteruna
 
 			StartButton.interactable = false;
 			LeaveButton.interactable = false;
-			
+
 		}
 
 		private void FixedUpdate()
 		{
-			if(Input.GetKey(KeyCode.Escape))
+			if (Input.GetKey(KeyCode.Escape))
 			{
 				UnityEngine.Application.Quit();
 			}

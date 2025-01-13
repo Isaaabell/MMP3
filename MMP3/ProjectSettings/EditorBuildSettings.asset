@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/#CONTENT/Scenes/Isa_Prototyp.unity
     guid: e7f0b03c202d25444945625ba34d98f0
+  - enabled: 1
+    path: Assets/#CONTENT/Scenes/Isa_Prototyp 1.unity
+    guid: b3161dcae9d9e504c8c2102f6edb0321
+  - enabled: 1
+    path: Assets/#CONTENT/Scenes/Isa_Prototyp 2.unity
+    guid: ddb31d8cce781ce45b5bfb8ad9a8bb1a
   m_configObjects: {}
