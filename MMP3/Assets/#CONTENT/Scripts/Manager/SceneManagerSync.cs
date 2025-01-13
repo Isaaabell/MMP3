@@ -8,7 +8,7 @@ using System;
 public class SceneManagerSync : AttributesSync
 {
     private const int _STREETSCENEINDEX = 1;
-    private const int _HOUSESCENEINDEX = 2; //TODO: for later
+    private const int _HOUSESCENEINDEX = 2;
     void Start()
     {
     }
