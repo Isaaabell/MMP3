@@ -5,26 +5,19 @@ using UnityEngine.SceneManagement;
 using Alteruna;
 using System;
 
+
+
 public class SceneManagerSync : AttributesSync
 {
     private const int _STREETSCENEINDEX = 1;
     private const int _HOUSESCENEINDEX = 2;
+
     void Start()
     {
-    }
 
+    }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            BroadcastRemoteMethod("SyncLoadStreetScene");
-        }
-
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            BroadcastRemoteMethod("SyncLoadHouseScene");
-        }
-
     }
 
     [SynchronizableMethod]
@@ -33,9 +26,10 @@ public class SceneManagerSync : AttributesSync
         SceneManager.LoadSceneAsync(_STREETSCENEINDEX);
     }
 
-        [SynchronizableMethod]
+    [SynchronizableMethod]
     private void SyncLoadHouseScene()
     {
         SceneManager.LoadSceneAsync(_HOUSESCENEINDEX);
     }
+
 }
