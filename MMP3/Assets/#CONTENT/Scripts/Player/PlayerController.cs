@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     [Header("Base setup")]
@@ -28,8 +28,11 @@ public class PlayerController : MonoBehaviour
     private Alteruna.Avatar _avatar;
     [SerializeField] private ItemLogicOnPlayer _itemLogicOnPlayer;
 
+    [SerializeField] private GameObject _car;
+    [SerializeField] private GameObject _player;
 
-    
+
+
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -58,6 +61,18 @@ public class PlayerController : MonoBehaviour
             return;
 
         bool isRunning = false;
+
+        Scene currentScene = SceneManager.GetActiveScene();
+        if (currentScene.buildIndex == 1)
+        {
+            _car.SetActive(true);
+            _player.SetActive(false);
+        }
+        else
+        {
+            _car.SetActive(false);
+            _player.SetActive(true);
+        }
 
         // Press Left Shift to run
         isRunning = Input.GetKey(KeyCode.LeftShift);
