@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneSwitchZoneScript : MonoBehaviour
 {
-    private bool _isItemInTriggerZone;
+    private bool _isPlayerInTriggerZone;
     private SceneManagerSync _sceneManagerSync;
 
 
@@ -20,16 +21,35 @@ public class SceneSwitchZoneScript : MonoBehaviour
     void Update()
     {
         DisplayCurrentScene();
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Teleport"))
+        {
+            Debug.Log("III: Teleport entered the trigger zone.");
+            _isPlayerInTriggerZone = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Teleport"))
+        {
+            Debug.Log("III: Teleport exited the trigger zone.");
+            _isPlayerInTriggerZone = false;
+        }
     }
 
     void DisplayCurrentScene()
     {
         Scene currentScene = SceneManager.GetActiveScene();
-        Debug.Log("Current active scene: " + currentScene.name + " (Build Index: " + currentScene.buildIndex + ")");
+        // Debug.Log("Current active scene: " + currentScene.name + " (Build Index: " + currentScene.buildIndex + ")");
 
         if (currentScene.buildIndex == 0)
         {
-            if (_isItemInTriggerZone && Input.GetKeyDown(KeyCode.F) && _sceneManagerSync != null)
+            if (_isPlayerInTriggerZone && Input.GetKeyDown(KeyCode.F) && _sceneManagerSync != null)
             {
                 _sceneManagerSync.BroadcastRemoteMethod("SyncLoadStreetScene");
             }
@@ -37,35 +57,47 @@ public class SceneSwitchZoneScript : MonoBehaviour
 
         if (currentScene.buildIndex == 1)
         {
-            if (_isItemInTriggerZone && Input.GetKeyDown(KeyCode.F) && _sceneManagerSync != null)
+            if (_isPlayerInTriggerZone && Input.GetKeyDown(KeyCode.F) && _sceneManagerSync != null)
             {
                 _sceneManagerSync.BroadcastRemoteMethod("SyncLoadHouseScene");
             }
         }
-        
+
         if (currentScene.buildIndex == 2)
         {
-            if (_isItemInTriggerZone && Input.GetKeyDown(KeyCode.F) && _sceneManagerSync != null)
+            if (_isPlayerInTriggerZone && Input.GetKeyDown(KeyCode.F) && _sceneManagerSync != null)
             {
                 _sceneManagerSync.BroadcastRemoteMethod("SyncLoadStreetScene");
             }
         }
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            _isItemInTriggerZone = true;
-            Debug.Log("Player entered the trigger zone.");
-        }
-    }
-    void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            _isItemInTriggerZone = false;
-            Debug.Log("Player left the trigger zone.");
-        }
-    }
+    // void OnTriggerEnter(Collider other)
+    // {
+    //     if (other.CompareTag("Player"))
+    //     {
+    //         _isPlayerInTriggerZone = true;
+    //         Debug.Log("Player entered the trigger zone.");
+    //     }
+
+    //     if (other.CompareTag("Teleport"))
+    //     {
+    //         Debug.LogWarning("Teleport entered the trigger zone.");
+    //     }
+    // }
+
+    // void OnTriggerExit(Collider other)
+    // {
+    //     if (other.CompareTag("Player"))
+    //     {
+    //         _isPlayerInTriggerZone = false;
+    //         Debug.Log("Player left the trigger zone.");
+    //     }
+
+    //     if (other.CompareTag("Teleport"))
+    //     {
+    //         Debug.LogWarning("Teleport exited the trigger zone.");
+    //     }
+    // }
+
 }
