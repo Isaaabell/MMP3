@@ -14,14 +14,7 @@ public class Items : AttributesSync
     public bool _hasValueBeenAdded = false;
     [SynchronizableField] public string _uniqueID;
 
-    // [SynchronizableField] public string uniqueID;
-    // public string UniqueID => uniqueID;
-
-
-    // private void Awake()
-    // {
-    //     uniqueID = Guid.NewGuid().ToString();
-    // }
+    
     private void Start()
     {
         _interactTxt.alpha = 0;
