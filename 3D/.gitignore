@@ -1,0 +1,70 @@
+# Maya project-specific files
+#############################
+
+# Maya temp and user-specific files
+mayaSwatches/         # Maya texture thumbnails
+__pycache__/          # Python cache
+*.log                 # Maya log files
+*.tmp                 # Temporary files
+*.bak                 # Backup files
+
+# Scene files (optional)
+*.mb                  # Maya Binary files (comment out if you want to track scene files)
+*.ma                  # Maya ASCII files (comment out if you want to track scene files)
+*.mel                 # MEL script files (optional)
+
+# Backup and autosave files
+autosave/
+*_backup*/
+*.backup
+
+# Render cache and simulations
+*.iff                 # Maya Image format
+*.tga                 # Targa images
+*.exr                 # OpenEXR files
+*.png                 # Optional, if rendered files should not be tracked
+renderData/
+cache/
+particles/
+fluidCache/
+image/
+clips/
+
+# Playblast files
+*.mov
+*.avi
+*.mp4
+playblast/
+
+# Plugins and external dependencies
+*.pyc                 # Compiled Python files
+*.mll                 # Maya plugins
+*.xgen                # XGen hair/fur files
+*.abc                 # Alembic cache files
+*.ogawa               # Ogawa cache files
+*.usd*                # USD (Universal Scene Description) files
+
+# Bifrost & other caches
+bifrostCache/
+Bifrost/
+
+# Texture and UV-related files
+sourceimages/
+textures/
+*.tx                  # Converted texture files
+*.dds                 # DirectDraw Surface files
+*.tiff                # TIFF images
+*.jpg                 # Optional, if you do not want to track textures
+
+# Exported assets
+*.fbx                 # Autodesk FBX files
+*.obj                 # 3D object files
+*.stl                 # 3D printing files
+*.gltf                # GLTF files
+*.usd                 # Pixar USD files
+
+# Miscellaneous
+Thumbs.db             # Windows thumbnail cache
+.DS_Store             # macOS file metadata
+.idea/                # JetBrains Rider & PyCharm
+.vscode/              # Visual Studio Code settings
