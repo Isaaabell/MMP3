@@ -34,8 +34,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject _car;
     [SerializeField] private GameObject _human;
     [SerializeField] public GameObject _carSeat;
-    [SerializeField] private Image _marker;
-    [SerializeField] private PrometeoCarController _carController;
+    // [SerializeField] private Image _marker;
+    // [SerializeField] private PrometeoCarController _carController;
 
 
 
@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
         _avatar = GetComponent<Alteruna.Avatar>();
         PlayerManager.Instance.AddPlayer(_avatar.gameObject);
 
-        _marker.enabled = false;
+        // _marker.enabled = false;
 
         if (!_avatar.IsMe)
             return;
@@ -89,10 +89,10 @@ public class PlayerController : MonoBehaviour
                 _car.SetActive(true);
                 _human.SetActive(false);
                 _playerCamera.transform.SetParent(_car.transform);
-                _marker.enabled = false;
-                _carController.CarMovement();
+                // _marker.enabled = false;
+                // _carController.CarMovement(); //External script to move the car
                 Debug.Log("III: Player 1 is in the driver seat");
-
+                MoveCar();
 
                 //CAse if therse nly one player DEBUG
                 if (players.Count == 1)
@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviour
                 _car.SetActive(false);
                 _human.SetActive(true);
                 Debug.Log("III: Player 2 is in the passenger seat");
-                _marker.enabled = true;
+                // _marker.enabled = true;
 
                 // Move();
 
@@ -135,6 +135,45 @@ public class PlayerController : MonoBehaviour
     }
 
     private void Move()
+    {
+        bool isRunning = Input.GetKey(KeyCode.LeftShift);
+        Vector3 forward = transform.TransformDirection(Vector3.forward);
+        Vector3 right = transform.TransformDirection(Vector3.right);
+
+        walkingSpeed = _itemLogicOnPlayer._isBigItemCollected ? slowedDownWalkingSpeed : initialWalkingSpeed;
+
+        float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0;
+        float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
+        float movementDirectionY = moveDirection.y;
+        moveDirection = (forward * curSpeedX) + (right * curSpeedY);
+
+        if (Input.GetButton("Jump") && canMove && _characterController.isGrounded)
+        {
+            moveDirection.y = jumpSpeed;
+        }
+        else
+        {
+            moveDirection.y = movementDirectionY;
+        }
+
+        if (!_characterController.isGrounded)
+        {
+            moveDirection.y -= gravity * Time.deltaTime;
+        }
+
+        _characterController.Move(moveDirection * Time.deltaTime);
+
+        // Player and Camera rotation
+        if (canMove && _playerCamera != null)
+        {
+            rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
+            rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
+            _playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+        }
+    }
+
+    private void MoveCar()
     {
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
         Vector3 forward = transform.TransformDirection(Vector3.forward);

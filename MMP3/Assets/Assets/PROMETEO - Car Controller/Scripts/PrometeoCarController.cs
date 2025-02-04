@@ -285,6 +285,7 @@ public class PrometeoCarController : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
+    CarMovement();
   }
 
   public void CarMovement()
