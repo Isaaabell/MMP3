@@ -3,22 +3,15 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Item
-  - LoadingZone
-<<<<<<< HEAD
-  - Chaser
-=======
-  - Teleport
->>>>>>> e44fcc83451a3ecaf66138c97de8ab3d48d17518
+  tags: []
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Player
+  - 
   - Water
   - UI
-  - Car
+  - 
   - 
   - 
   - 
