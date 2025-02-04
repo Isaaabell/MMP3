@@ -172,7 +172,7 @@ MonoBehaviour:
     Users: 
   _maxPlayers: 2
   AvatarSpawning: 1
-  AvatarPrefab: {fileID: 8390506433742108234, guid: aa661be9557abf64d8145d80f2edfabf, type: 3}
+  AvatarPrefab: {fileID: 8390506433742108234, guid: 83c0bb20066a24a479ab9810e35f5c23, type: 3}
   AvatarSpawnLocation: {fileID: 630831937}
   SpawnAvatarPerIndex: 1
   AvatarSpawnLocations:
@@ -210,157 +210,37 @@ MonoBehaviour:
       m_Calls: []
   OnPacketSent:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 12865029}
-        m_TargetAssemblyTypeName: DebugHelper, Assembly-CSharp
-        m_MethodName: OnPacketSent
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnPacketReceived:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 12865029}
-        m_TargetAssemblyTypeName: DebugHelper, Assembly-CSharp
-        m_MethodName: OnPacketReceived
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnLockRequested:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 12865029}
-        m_TargetAssemblyTypeName: DebugHelper, Assembly-CSharp
-        m_MethodName: OnLockRequested
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnLockAcquired:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 12865029}
-        m_TargetAssemblyTypeName: DebugHelper, Assembly-CSharp
-        m_MethodName: OnLockAcquired
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnLockDenied:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 12865029}
-        m_TargetAssemblyTypeName: DebugHelper, Assembly-CSharp
-        m_MethodName: OnLockDenied
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnLockUnlocked:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 12865029}
-        m_TargetAssemblyTypeName: DebugHelper, Assembly-CSharp
-        m_MethodName: OnLockUnlocked
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnForceSynced:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 12865029}
-        m_TargetAssemblyTypeName: DebugHelper, Assembly-CSharp
-        m_MethodName: OnForceSynced
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnForceSync:
     m_PersistentCalls:
       m_Calls: []
   OnRpcReceived:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 12865029}
-        m_TargetAssemblyTypeName: DebugHelper, Assembly-CSharp
-        m_MethodName: OnRpcReceived
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnRpcSent:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 12865029}
-        m_TargetAssemblyTypeName: DebugHelper, Assembly-CSharp
-        m_MethodName: OnRpcSent
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnRpcRegistered:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 12865029}
-        m_TargetAssemblyTypeName: DebugHelper, Assembly-CSharp
-        m_MethodName: OnRpcRegistered
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnForceSyncReply:
     m_PersistentCalls:
       m_Calls: []

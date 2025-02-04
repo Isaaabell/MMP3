@@ -1,16 +1,30 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
+[Serializable]
 public class MiniMap : MonoBehaviour
 {
+    public static MiniMap Instance { get; private set; }
     private Transform player;
 
     [Header("Canvases")]
-    [SerializeField] private GameObject miniMapCanvas;
-    [SerializeField] private GameObject fullMapCanvas;
+    [SerializeField] public GameObject miniMapCanvas;
+    [SerializeField] public GameObject fullMapCanvas;
 
-    private bool isMiniMapActive = true;
+    public bool isMiniMapActive = true;
 
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     void Start()
     {
         StartCoroutine(FindPlayer());
@@ -22,14 +36,14 @@ public class MiniMap : MonoBehaviour
 
     void Update()
     {
-        // Toggle between the minimap and full map when pressing "M"
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            isMiniMapActive = !isMiniMapActive;
+        // // Toggle between the minimap and full map when pressing "M"
+        // if (Input.GetKeyDown(KeyCode.M))
+        // {
+        //     isMiniMapActive = !isMiniMapActive;
 
-            if (miniMapCanvas != null) miniMapCanvas.SetActive(isMiniMapActive);
-            if (fullMapCanvas != null) fullMapCanvas.SetActive(!isMiniMapActive);
-        }
+        //     if (miniMapCanvas != null) miniMapCanvas.SetActive(isMiniMapActive);
+        //     if (fullMapCanvas != null) fullMapCanvas.SetActive(!isMiniMapActive);
+        // }
     }
 
     void LateUpdate()

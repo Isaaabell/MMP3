@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using Alteruna;
 public class PlayerController : MonoBehaviour
 {
     [Header("Base setup")]
@@ -14,6 +16,7 @@ public class PlayerController : MonoBehaviour
     public float lookSpeed = 2.0f;
     public float lookXLimit = 45.0f;
 
+    [SerializeField] private Synchronizable _synchronizable;
     CharacterController _characterController;
     Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
@@ -29,7 +32,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private ItemLogicOnPlayer _itemLogicOnPlayer;
 
     [SerializeField] private GameObject _car;
-    [SerializeField] private GameObject _player;
+    [SerializeField] private GameObject _human;
+    [SerializeField] public GameObject _carSeat;
+    [SerializeField] private Image _marker;
+    [SerializeField] private PrometeoCarController _carController;
 
 
 
@@ -42,8 +48,9 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         _avatar = GetComponent<Alteruna.Avatar>();
-        
         PlayerManager.Instance.AddPlayer(_avatar.gameObject);
+
+        _marker.enabled = false;
 
         if (!_avatar.IsMe)
             return;
@@ -58,73 +65,118 @@ public class PlayerController : MonoBehaviour
         // Cursor.visible = false;
     }
 
+
     void Update()
     {
         if (!_avatar.IsMe)
             return;
 
-        bool isRunning = false;
-
         Scene currentScene = SceneManager.GetActiveScene();
+        bool isSceneOne = currentScene.buildIndex == 1;
+        var players = PlayerManager.Instance._players;
 
-        //if curent scene is 1 and self is player with ID 1
-        if (currentScene.buildIndex == 1 && PlayerManager.Instance._players[0].GetComponent<Alteruna.Avatar>().IsMe)
+        if (players.Count == 0)
+            return;
+
+        bool isPlayerOne = players.Count > 0 && players[0].GetComponent<Alteruna.Avatar>().IsMe;
+        bool isPlayerTwo = players.Count > 1 && players[1].GetComponent<Alteruna.Avatar>().IsMe;
+
+        if (isSceneOne)
         {
-            _car.SetActive(true);
-            _player.SetActive(false);
-            _playerCamera.transform.SetParent(_car.transform);
-            Debug.Log("III: Player is in the car");
+            if (isPlayerOne)
+            {
+                // Player 1 (ID 0) is the driver
+                _car.SetActive(true);
+                _human.SetActive(false);
+                _playerCamera.transform.SetParent(_car.transform);
+                _marker.enabled = false;
+                _carController.CarMovement();
+                Debug.Log("III: Player 1 is in the driver seat");
+
+
+                //CAse if therse nly one player DEBUG
+                if (players.Count == 1)
+                    return;
+                
+                PlayerManager.Instance.ParentPlayerToCar(players[1], _carSeat);
+
+
+            }
+            else if (isPlayerTwo)
+            {
+                // Player 2 (ID 1) is the passenger
+                _car.SetActive(false);
+                _human.SetActive(true);
+                Debug.Log("III: Player 2 is in the passenger seat");
+                _marker.enabled = true;
+
+                // Move();
+
+                if (Input.GetKeyDown(KeyCode.M))
+                {
+                    MiniMap.Instance.isMiniMapActive = !MiniMap.Instance.isMiniMapActive;
+
+                    if (MiniMap.Instance.miniMapCanvas != null)
+                        MiniMap.Instance.miniMapCanvas.SetActive(MiniMap.Instance.isMiniMapActive);
+
+                    if (MiniMap.Instance.fullMapCanvas != null)
+                        MiniMap.Instance.fullMapCanvas.SetActive(!MiniMap.Instance.isMiniMapActive);
+                }
+            }
         }
         else
         {
+            // In other scenes, both players walk independently
             _car.SetActive(false);
-            _player.SetActive(true);
-
+            _human.SetActive(true);
             _playerCamera.transform.SetParent(transform);
+            Move();
+        }
+    }
 
+    private void Move()
+    {
+        bool isRunning = Input.GetKey(KeyCode.LeftShift);
+        Vector3 forward = transform.TransformDirection(Vector3.forward);
+        Vector3 right = transform.TransformDirection(Vector3.right);
 
+        walkingSpeed = _itemLogicOnPlayer._isBigItemCollected ? slowedDownWalkingSpeed : initialWalkingSpeed;
 
-            // Press Left Shift to run
-            isRunning = Input.GetKey(KeyCode.LeftShift);
+        float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0;
+        float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
+        float movementDirectionY = moveDirection.y;
+        moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
-            // We are grounded, so recalculate move direction based on axis
-            Vector3 forward = transform.TransformDirection(Vector3.forward);
-            Vector3 right = transform.TransformDirection(Vector3.right);
-
-            walkingSpeed = _itemLogicOnPlayer._isBigItemCollected ? slowedDownWalkingSpeed : initialWalkingSpeed;
-
-            float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0;
-            float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
-            float movementDirectionY = moveDirection.y;
-            moveDirection = (forward * curSpeedX) + (right * curSpeedY);
-
-            if (Input.GetButton("Jump") && canMove && _characterController.isGrounded)
-            {
-                moveDirection.y = jumpSpeed;
-            }
-            else
-            {
-                moveDirection.y = movementDirectionY;
-            }
-
-            if (!_characterController.isGrounded)
-            {
-                moveDirection.y -= gravity * Time.deltaTime;
-            }
-
-            // Move the controller
-            _characterController.Move(moveDirection * Time.deltaTime);
-
-            // Player and Camera rotation
-            if (canMove && _playerCamera != null)
-            {
-                rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
-                rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
-                _playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-                transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
-            }
+        if (Input.GetButton("Jump") && canMove && _characterController.isGrounded)
+        {
+            moveDirection.y = jumpSpeed;
+        }
+        else
+        {
+            moveDirection.y = movementDirectionY;
         }
 
+        if (!_characterController.isGrounded)
+        {
+            moveDirection.y -= gravity * Time.deltaTime;
+        }
 
+        _characterController.Move(moveDirection * Time.deltaTime);
+
+        // Player and Camera rotation
+        if (canMove && _playerCamera != null)
+        {
+            rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
+            rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
+            _playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+        }
     }
+
+    // //Corutine to Wait 5 seconds
+    // IEnumerator Wait(int seconds)
+    // {
+    //     yield return new WaitForSeconds(seconds);
+    // }
+
 }
