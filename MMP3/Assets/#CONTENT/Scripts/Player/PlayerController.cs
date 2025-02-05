@@ -24,8 +24,8 @@ public class PlayerController : AttributesSync
     [HideInInspector]
     public bool canMove = true;
 
-    [SerializeField]
-    private float cameraYOffset = 0.4f;
+    // [SerializeField]
+    // private float cameraYOffset = 0.4f;
     public Camera _playerCamera;
 
     private Alteruna.Avatar _avatar;
@@ -34,8 +34,8 @@ public class PlayerController : AttributesSync
     [SerializeField] private GameObject _car;
     [SerializeField] public GameObject _human;
 
-    [SerializeField] private GameObject _cameraSpot;
-    // [SerializeField] public GameObject _carSeat;
+    [SerializeField] private GameObject _cameraSpotCar;
+    [SerializeField] private GameObject _cameraSpotHuman;
     [SerializeField] private Canvas _marker;
 
 
@@ -58,7 +58,7 @@ public class PlayerController : AttributesSync
         _playerCamera = Camera.main;
         // _playerCamera.transform.position = new Vector3(transform.position.x, transform.position.y + cameraYOffset, transform.position.z);
         // _playerCamera.transform.SetParent(transform);
-        _playerCamera.transform.SetParent(_cameraSpot.transform);
+        _playerCamera.transform.SetParent(_cameraSpotHuman.transform);
         _playerCamera.transform.localPosition = new Vector3(0, 0, 0);
 
         // // Lock cursor
@@ -94,10 +94,13 @@ public class PlayerController : AttributesSync
                 // Player 1 (ID 0) is the driver
                 PlayerManager.Instance.ActivateDeactivateGameObject(_car, true);
                 PlayerManager.Instance.ActivateDeactivateGameObject(_human, false);
-                // _playerCamera.transform.SetParent(_carSeat.transform);
+
+                _playerCamera.transform.SetParent(_cameraSpotCar.transform);
+                _playerCamera.transform.localPosition = new Vector3(0, 0, 0);
+
                 Debug.Log("III: Player 1 is in the driver seat");
                 MoveCar();
-                // _marker.enabled = false;
+
 
 
 
@@ -107,8 +110,9 @@ public class PlayerController : AttributesSync
             {
                 // Player 2 (ID 1) is the passenger          
                 Debug.Log("III: Player 2 is in the passenger seat");
-                _marker.enabled = true;    
+                _marker.enabled = true;
                 PlayerManager.Instance.ActivateDeactivateGameObject(_human, false);
+
 
                 if (Input.GetKeyDown(KeyCode.M))
                 {
@@ -135,17 +139,18 @@ public class PlayerController : AttributesSync
         else
         {
             // In other scenes, both players walk independently
-
-            // _playerCamera.transform.SetParent(transform);
             foreach (var player in players)
             {
                 PlayerManager.Instance.ActivateDeactivateGameObject(_car, false);
                 PlayerManager.Instance.ActivateDeactivateGameObject(_human, true);
             }
+
+            _playerCamera.transform.SetParent(_cameraSpotHuman.transform);
+            _playerCamera.transform.localPosition = new Vector3(0, 0, 0);
             Move();
         }
     }
-   
+
     private void Move()
     {
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
@@ -223,11 +228,5 @@ public class PlayerController : AttributesSync
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
     }
-
-    // //Corutine to Wait 5 seconds
-    // IEnumerator Wait(int seconds)
-    // {
-    //     yield return new WaitForSeconds(seconds);
-    // }
 
 }

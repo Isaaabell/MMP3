@@ -1,13 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SceneSwitchZoneScript : MonoBehaviour
 {
     private bool _isPlayerInTriggerZone;
     private SceneManagerSync _sceneManagerSync;
+    // public Image sceneSwitchOverlay;
+    // public float fadeDuration = 1.0f;
+    // private CanvasGroup canvasGroup;
+
 
 
     void Start()
@@ -26,7 +32,7 @@ public class SceneSwitchZoneScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Teleport"))
+        if (other.CompareTag("Player"))
         {
             Debug.Log("III: Teleport entered the trigger zone.");
             _isPlayerInTriggerZone = true;
@@ -35,7 +41,7 @@ public class SceneSwitchZoneScript : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Teleport"))
+        if (other.CompareTag("Player"))
         {
             Debug.Log("III: Teleport exited the trigger zone.");
             _isPlayerInTriggerZone = false;
@@ -51,7 +57,9 @@ public class SceneSwitchZoneScript : MonoBehaviour
         {
             if (_isPlayerInTriggerZone && Input.GetKeyDown(KeyCode.F) && _sceneManagerSync != null)
             {
+                // StartCoroutine(Wait());
                 _sceneManagerSync.BroadcastRemoteMethod("SyncLoadStreetScene");
+
             }
         }
 
@@ -68,36 +76,8 @@ public class SceneSwitchZoneScript : MonoBehaviour
             if (_isPlayerInTriggerZone && Input.GetKeyDown(KeyCode.F) && _sceneManagerSync != null)
             {
                 _sceneManagerSync.BroadcastRemoteMethod("SyncLoadStreetScene");
+
             }
         }
     }
-
-    // void OnTriggerEnter(Collider other)
-    // {
-    //     if (other.CompareTag("Player"))
-    //     {
-    //         _isPlayerInTriggerZone = true;
-    //         Debug.Log("Player entered the trigger zone.");
-    //     }
-
-    //     if (other.CompareTag("Teleport"))
-    //     {
-    //         Debug.LogWarning("Teleport entered the trigger zone.");
-    //     }
-    // }
-
-    // void OnTriggerExit(Collider other)
-    // {
-    //     if (other.CompareTag("Player"))
-    //     {
-    //         _isPlayerInTriggerZone = false;
-    //         Debug.Log("Player left the trigger zone.");
-    //     }
-
-    //     if (other.CompareTag("Teleport"))
-    //     {
-    //         Debug.LogWarning("Teleport exited the trigger zone.");
-    //     }
-    // }
-
 }
