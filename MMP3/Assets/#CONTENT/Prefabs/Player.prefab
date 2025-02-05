@@ -215,6 +215,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &924660098171828274
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6544618376553087956}
+  m_Layer: 3
+  m_Name: CameraSpot
+  m_TagString: Untagged
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6544618376553087956
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924660098171828274}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 3.798, z: -1.117}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2548718424990251385}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1799687268719844958
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,6 +430,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 812419976810032342}
+  - {fileID: 6544618376553087956}
   - {fileID: 2274785693639618301}
   - {fileID: 1356841684527258850}
   - {fileID: 5622635426025213390}
@@ -498,6 +530,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b69b65088fb6dc140a80943e7fb661a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Multiplayer: {fileID: 0}
+  _uidString: 4a05e983-72a1-420a-846c-ebb51f1acf05
+  Reliability: 1
+  LocalMethodBehavior: 1
   walkingSpeed: 3
   initialWalkingSpeed: 7
   slowedDownWalkingSpeed: 2
@@ -506,14 +542,15 @@ MonoBehaviour:
   gravity: 20
   lookSpeed: 2
   lookXLimit: 45
-  _synchronizable: {fileID: 0}
+  _synchronizable: {fileID: 3180782101533236788}
   canMove: 1
   cameraYOffset: 2
+  _playerCamera: {fileID: 0}
   _itemLogicOnPlayer: {fileID: 7679749553279330754}
   _car: {fileID: 4201000439152498574}
   _human: {fileID: 4180490636723954492}
-  _carSeat: {fileID: 175883137405727065}
-  _marker: {fileID: 3555801837108945898}
+  _cameraSpot: {fileID: 924660098171828274}
+  _marker: {fileID: 6089786026620840430}
 --- !u!114 &7679749553279330754
 MonoBehaviour:
   m_ObjectHideFlags: 0

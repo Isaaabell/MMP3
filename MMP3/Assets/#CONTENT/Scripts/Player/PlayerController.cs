@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Alteruna;
-public class PlayerController : MonoBehaviour
+public class PlayerController : AttributesSync
 {
     [Header("Base setup")]
     public float walkingSpeed;
@@ -26,16 +26,17 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private float cameraYOffset = 0.4f;
-    private Camera _playerCamera;
+    public Camera _playerCamera;
 
     private Alteruna.Avatar _avatar;
     [SerializeField] private ItemLogicOnPlayer _itemLogicOnPlayer;
 
     [SerializeField] private GameObject _car;
-    [SerializeField] private GameObject _human;
-    [SerializeField] public GameObject _carSeat;
-    // [SerializeField] private Image _marker;
-    // [SerializeField] private PrometeoCarController _carController;
+    [SerializeField] public GameObject _human;
+
+    [SerializeField] private GameObject _cameraSpot;
+    // [SerializeField] public GameObject _carSeat;
+    [SerializeField] private Canvas _marker;
 
 
 
@@ -50,21 +51,20 @@ public class PlayerController : MonoBehaviour
         _avatar = GetComponent<Alteruna.Avatar>();
         PlayerManager.Instance.AddPlayer(_avatar.gameObject);
 
-        // _marker.enabled = false;
-
         if (!_avatar.IsMe)
             return;
 
         _characterController = GetComponent<CharacterController>();
         _playerCamera = Camera.main;
-        _playerCamera.transform.position = new Vector3(transform.position.x, transform.position.y + cameraYOffset, transform.position.z);
-        _playerCamera.transform.SetParent(transform);
+        // _playerCamera.transform.position = new Vector3(transform.position.x, transform.position.y + cameraYOffset, transform.position.z);
+        // _playerCamera.transform.SetParent(transform);
+        _playerCamera.transform.SetParent(_cameraSpot.transform);
+        _playerCamera.transform.localPosition = new Vector3(0, 0, 0);
 
         // // Lock cursor
         // Cursor.lockState = CursorLockMode.Locked;
         // Cursor.visible = false;
     }
-
 
     void Update()
     {
@@ -81,36 +81,34 @@ public class PlayerController : MonoBehaviour
         bool isPlayerOne = players.Count > 0 && players[0].GetComponent<Alteruna.Avatar>().IsMe;
         bool isPlayerTwo = players.Count > 1 && players[1].GetComponent<Alteruna.Avatar>().IsMe;
 
+        foreach (var player in players)
+        {
+            PlayerManager.Instance.ActivateDeactivateGameObject(_car, false);
+            PlayerManager.Instance.DisableCanvas(_marker);
+        }
+
         if (isSceneOne)
         {
             if (isPlayerOne)
             {
                 // Player 1 (ID 0) is the driver
-                _car.SetActive(true);
-                _human.SetActive(false);
-                _playerCamera.transform.SetParent(_car.transform);
-                // _marker.enabled = false;
-                // _carController.CarMovement(); //External script to move the car
+                PlayerManager.Instance.ActivateDeactivateGameObject(_car, true);
+                PlayerManager.Instance.ActivateDeactivateGameObject(_human, false);
+                // _playerCamera.transform.SetParent(_carSeat.transform);
                 Debug.Log("III: Player 1 is in the driver seat");
                 MoveCar();
+                // _marker.enabled = false;
 
-                //CAse if therse nly one player DEBUG
-                if (players.Count == 1)
-                    return;
-                
-                PlayerManager.Instance.ParentPlayerToCar(players[1], _carSeat);
+
 
 
             }
             else if (isPlayerTwo)
             {
-                // Player 2 (ID 1) is the passenger
-                _car.SetActive(false);
-                _human.SetActive(true);
+                // Player 2 (ID 1) is the passenger          
                 Debug.Log("III: Player 2 is in the passenger seat");
-                // _marker.enabled = true;
-
-                // Move();
+                _marker.enabled = true;    
+                PlayerManager.Instance.ActivateDeactivateGameObject(_human, false);
 
                 if (Input.GetKeyDown(KeyCode.M))
                 {
@@ -122,18 +120,32 @@ public class PlayerController : MonoBehaviour
                     if (MiniMap.Instance.fullMapCanvas != null)
                         MiniMap.Instance.fullMapCanvas.SetActive(!MiniMap.Instance.isMiniMapActive);
                 }
+
+                if (players[0] != null && players[1] != null)
+                {
+                    players[1].transform.position = players[0].transform.position;
+                    players[1].transform.rotation = players[0].transform.rotation;
+
+                    Vector3 mirroredScale = players[1].transform.localScale;
+                    mirroredScale.x = -players[0].transform.localScale.x;
+                    players[1].transform.localScale = mirroredScale;
+                }
             }
         }
         else
         {
             // In other scenes, both players walk independently
-            _car.SetActive(false);
-            _human.SetActive(true);
-            _playerCamera.transform.SetParent(transform);
+
+            // _playerCamera.transform.SetParent(transform);
+            foreach (var player in players)
+            {
+                PlayerManager.Instance.ActivateDeactivateGameObject(_car, false);
+                PlayerManager.Instance.ActivateDeactivateGameObject(_human, true);
+            }
             Move();
         }
     }
-
+   
     private void Move()
     {
         bool isRunning = Input.GetKey(KeyCode.LeftShift);

@@ -28,33 +28,84 @@ public class PlayerManager : AttributesSync
         _players.Add(player);
     }
 
-    public void ParentPlayerToCar(GameObject player, GameObject carSeat)
+
+    // public void ParentPlayerToCar(GameObject player, GameObject carSeat)
+    // {
+    //     player.transform.SetParent(carSeat.transform);
+    //     player.transform.localPosition = Vector3.zero;
+    //     player.transform.localRotation = Quaternion.identity;
+
+    //     Synchronize this action across all clients
+    //     BroadcastRemoteMethod("SyncParentPlayerToCar", player.name, carSeat.name);
+    // }
+
+    // Synchronizable Methods
+    // [SynchronizableMethod]
+    // private void SyncParentPlayerToCar(string playerName, string carSeatName)
+    // {
+    //     GameObject player = GameObject.Find(playerName);
+    //     GameObject carSeat = GameObject.Find(carSeatName);
+
+    //     if (player == null || carSeat == null)
+    //     {
+    //         Debug.LogWarning($"Sync failed: Player '{playerName}' or CarSeat '{carSeatName}' not found.");
+    //         return;
+    //     }
+
+    //     player.transform.SetParent(carSeat.transform);
+    //     player.transform.localPosition = Vector3.zero;
+    //     player.transform.localRotation = Quaternion.identity;
+
+    //     Debug.Log($"Synced: {playerName} is now parented to {carSeatName}");
+    // }
+
+    public void ActivateDeactivateGameObject(GameObject gameObject, bool active)
     {
-        player.transform.SetParent(carSeat.transform);
-        player.transform.localPosition = Vector3.zero;
-        player.transform.localRotation = Quaternion.identity;
+        gameObject.SetActive(active);
 
         // Synchronize this action across all clients
-        BroadcastRemoteMethod("SyncParentPlayerToCar", player.name, carSeat.name);
+        BroadcastRemoteMethod("SyncActivateDeactivateGameObject", gameObject.name, active);
     }
+
+    public void DisableCanvas(Canvas canvas)
+    {
+        canvas.enabled = false;
+
+        // Synchronize this action across all clients
+        BroadcastRemoteMethod("SyncDisableCanvas", canvas.name);
+    }
+
 
     // Synchronizable Methods
     [SynchronizableMethod]
-    private void SyncParentPlayerToCar(string playerName, string carSeatName)
+    private void SyncActivateDeactivateGameObject(string gameObjectName, bool active)
     {
-        GameObject player = GameObject.Find(playerName);
-        GameObject carSeat = GameObject.Find(carSeatName);
+        GameObject gameObject = GameObject.Find(gameObjectName);
 
-        if (player == null || carSeat == null)
+        if (gameObject == null)
         {
-            Debug.LogWarning($"Sync failed: Player '{playerName}' or CarSeat '{carSeatName}' not found.");
+            Debug.LogWarning($"Sync failed: GameObject '{gameObjectName}' not found.");
             return;
         }
 
-        player.transform.SetParent(carSeat.transform);
-        player.transform.localPosition = Vector3.zero;
-        player.transform.localRotation = Quaternion.identity;
+        gameObject.SetActive(active);
 
-        Debug.Log($"Synced: {playerName} is now parented to {carSeatName}");
+        Debug.Log($"Synced: {gameObjectName} is now {(active ? "active" : "inactive")}");
+    }
+
+    [SynchronizableMethod]
+    private void SyncDisableCanvas(string canvasName)
+    {
+        Canvas canvas = GameObject.Find(canvasName).GetComponent<Canvas>();
+
+        if (canvas == null)
+        {
+            Debug.LogWarning($"Sync failed: Canvas '{canvasName}' not found.");
+            return;
+        }
+
+        canvas.enabled = false;
+
+        Debug.Log($"Synced: {canvasName} is now disabled");
     }
 }
