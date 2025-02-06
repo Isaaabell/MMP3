@@ -560,8 +560,6 @@ MonoBehaviour:
   _uidString: 1ae46b09-f8f8-4aba-bd16-6db27048dc51
   Reliability: 1
   LocalMethodBehavior: 1
-  sceneSwitchOverlay: {fileID: 0}
-  fadeDuration: 1
 --- !u!4 &227167921
 Transform:
   m_ObjectHideFlags: 0

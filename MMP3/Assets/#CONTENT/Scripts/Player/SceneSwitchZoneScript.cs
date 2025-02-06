@@ -69,7 +69,8 @@ public class SceneSwitchZoneScript : MonoBehaviour
         {
             if (_isPlayerInTriggerZone && Input.GetKeyDown(KeyCode.F) && _sceneManagerSync != null)
             {
-                _sceneManagerSync.BroadcastRemoteMethod("SyncLoadStreetScene");
+                // _sceneManagerSync.BroadcastRemoteMethod("SyncLoadStreetScene");
+                ItemManager.Instance.WinGame();
 
             }
         }
