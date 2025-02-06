@@ -10,11 +10,6 @@ public class SceneSwitchZoneScript : MonoBehaviour
 {
     private bool _isPlayerInTriggerZone;
     private SceneManagerSync _sceneManagerSync;
-    // public Image sceneSwitchOverlay;
-    // public float fadeDuration = 1.0f;
-    // private CanvasGroup canvasGroup;
-
-
 
     void Start()
     {
@@ -57,7 +52,6 @@ public class SceneSwitchZoneScript : MonoBehaviour
         {
             if (_isPlayerInTriggerZone && Input.GetKeyDown(KeyCode.F) && _sceneManagerSync != null)
             {
-                // StartCoroutine(Wait());
                 _sceneManagerSync.BroadcastRemoteMethod("SyncLoadStreetScene");
 
             }
