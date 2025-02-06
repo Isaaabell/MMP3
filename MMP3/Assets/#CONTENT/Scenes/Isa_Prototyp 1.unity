@@ -6205,6 +6205,8 @@ MonoBehaviour:
   _uidString: 1ae46b09-f8f8-4aba-bd16-6db27048dc51
   Reliability: 1
   LocalMethodBehavior: 1
+  sceneSwitchOverlay: {fileID: 0}
+  fadeDuration: 1
 --- !u!1 &1273980032
 GameObject:
   m_ObjectHideFlags: 0
@@ -6463,7 +6465,7 @@ MonoBehaviour:
     Users: 
   _maxPlayers: 2
   AvatarSpawning: 1
-  AvatarPrefab: {fileID: 8390506433742108234, guid: aa661be9557abf64d8145d80f2edfabf, type: 3}
+  AvatarPrefab: {fileID: 8390506433742108234, guid: 83c0bb20066a24a479ab9810e35f5c23, type: 3}
   AvatarSpawnLocation: {fileID: 732324275}
   SpawnAvatarPerIndex: 0
   AvatarSpawnLocations: []
