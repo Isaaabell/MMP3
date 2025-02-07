@@ -100,6 +100,7 @@ public class ItemLogicOnPlayer : AttributesSync
         _bigItem = bigItemParent.gameObject;
         _bigItem.transform.SetParent(_itemAnchor.transform);
         _bigItem.transform.localPosition = Vector3.zero;
+        _bigItem.transform.localScale = _bigItem.transform.localScale / 3f;
 
         _isBigItemCollected = true;
 
