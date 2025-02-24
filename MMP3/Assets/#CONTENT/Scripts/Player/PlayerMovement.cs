@@ -15,6 +15,8 @@ public class PlayerMovement : NetworkBehaviour
     public float JumpForce = 5f;
     public float GravityValue = -9.81f;
 
+    [Networked] private int playerIndex { get; set; }
+
 
     private void Awake()
     {
@@ -25,6 +27,7 @@ public class PlayerMovement : NetworkBehaviour
 
     void Update()
     {
+
         if (Input.GetButtonDown("Jump"))
         {
             _jumpPressed = true;
@@ -39,6 +42,10 @@ public class PlayerMovement : NetworkBehaviour
     public override void FixedUpdateNetwork()
     {
         // FixedUpdateNetwork is only executed on the StateAuthority
+        if (playerIndex == 1)
+        {
+            return;
+        }
 
         if (_controller.isGrounded)
         {
@@ -69,11 +76,24 @@ public class PlayerMovement : NetworkBehaviour
             Camera = Camera.main;
             Camera.GetComponent<FirstPersonCamera>().Target = transform;
         }
+        playerIndex = Runner.SessionInfo.PlayerCount - 1; // Assign player index
+
+        Debug.Log("Player index: " + playerIndex);
+
+        if (playerIndex == 0)
+        {
+            gameObject.transform.position = new Vector3(0, 0, 0);
+        }
+        else
+        {
+            gameObject.transform.position = new Vector3(0, 1, 0);
+        }
+
     }
 
     void TrySwitchScene()
     {
-            Runner.LoadScene(SceneRef.FromIndex(1));
-            Debug.Log("Switching scene");
+        Runner.LoadScene(SceneRef.FromIndex(1));
+        Debug.Log("Switching scene");
     }
 }
