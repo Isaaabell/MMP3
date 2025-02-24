@@ -15,7 +15,6 @@ public class PlayerMovement : NetworkBehaviour
     public float JumpForce = 5f;
     public float GravityValue = -9.81f;
 
-    public string nextScene = "City";
 
     private void Awake()
     {
@@ -74,7 +73,7 @@ public class PlayerMovement : NetworkBehaviour
 
     void TrySwitchScene()
     {
-            Runner.LoadScene(nextScene);
-            Debug.Log("Switching scene to " + nextScene);
+            Runner.LoadScene(SceneRef.FromIndex(1));
+            Debug.Log("Switching scene");
     }
 }
