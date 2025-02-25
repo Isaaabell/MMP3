@@ -13,12 +13,12 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadSceneAsync("Game");
     }
-    public void OptionsScene()
-    {
-        SceneManager.LoadSceneAsync("Options");
-    }
     public void QuitGame()
     {
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #else
         Application.Quit();
+        #endif
     }
 }
