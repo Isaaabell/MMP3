@@ -915,7 +915,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3074942524935125775, guid: ffe1504051935ae4d9d2d98c6a8462d2, type: 3}
       propertyPath: m_Name
-      value: Wall Shelf (1)
+      value: Shelf Wall (1)
       objectReference: {fileID: 0}
     - target: {fileID: 5034533069909689373, guid: ffe1504051935ae4d9d2d98c6a8462d2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1102,7 +1102,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3074942524935125775, guid: ffe1504051935ae4d9d2d98c6a8462d2, type: 3}
       propertyPath: m_Name
-      value: Wall Shelf
+      value: Shelf Wall
       objectReference: {fileID: 0}
     - target: {fileID: 5034533069909689373, guid: ffe1504051935ae4d9d2d98c6a8462d2, type: 3}
       propertyPath: m_LocalPosition.x
