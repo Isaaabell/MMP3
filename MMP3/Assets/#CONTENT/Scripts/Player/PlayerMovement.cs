@@ -11,29 +11,26 @@ public class PlayerMovement : NetworkBehaviour
     private CharacterController _controller;
 
     public float PlayerSpeed = 2f;
-
     public float JumpForce = 5f;
     public float GravityValue = -9.81f;
 
-    [Networked] private int playerIndex { get; set; }
-
+    [Networked] private int playerIndex { get; set; } // Tracks player index
+    [Networked] private bool isDriver { get; set; } // Tracks if player is the driver
 
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
-
         DontDestroyOnLoad(this.gameObject);
     }
 
     void Update()
     {
-
         if (Input.GetButtonDown("Jump"))
         {
             _jumpPressed = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F) && HasStateAuthority) // Ensure only Player 1 initiates scene switch
         {
             TrySwitchScene();
         }
@@ -41,10 +38,13 @@ public class PlayerMovement : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        // FixedUpdateNetwork is only executed on the StateAuthority
-        if (playerIndex == 1)
+        if (SceneManager.GetActiveScene().buildIndex == 1)
         {
-            return;
+            if (playerIndex == 2) 
+            {
+                Debug.Log("Player 1 is the driver");
+                return; // Prevent movement for non-drivers
+            }
         }
 
         if (_controller.isGrounded)
@@ -69,6 +69,7 @@ public class PlayerMovement : NetworkBehaviour
 
         _jumpPressed = false;
     }
+
     public override void Spawned()
     {
         if (HasStateAuthority)
@@ -76,24 +77,22 @@ public class PlayerMovement : NetworkBehaviour
             Camera = Camera.main;
             Camera.GetComponent<FirstPersonCamera>().Target = transform;
         }
-        playerIndex = Runner.SessionInfo.PlayerCount - 1; // Assign player index
 
+        playerIndex = Runner.LocalPlayer.PlayerId; // Assign player index
         Debug.Log("Player index: " + playerIndex);
-
-        if (playerIndex == 0)
+        foreach (var player in Runner.ActivePlayers)
         {
-            gameObject.transform.position = new Vector3(0, 0, 0);
+            Debug.Log("Player in lobby: " + player.PlayerId);
         }
-        else
-        {
-            gameObject.transform.position = new Vector3(0, 1, 0);
-        }
-
     }
 
     void TrySwitchScene()
     {
         Runner.LoadScene(SceneRef.FromIndex(1));
         Debug.Log("Switching scene");
+        foreach (var player in Runner.ActivePlayers)
+        {
+            Debug.Log("Player in lobby: " + player.PlayerId);
+        }
     }
 }
