@@ -1,3 +1,4 @@
+using System.Linq;
 using Fusion;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,7 +7,7 @@ public class PlayerMovement : NetworkBehaviour
 {
     private Vector3 _velocity;
     private bool _jumpPressed;
-    public Camera Camera;
+    public Camera playerCamera;
 
     private CharacterController _controller;
 
@@ -14,8 +15,10 @@ public class PlayerMovement : NetworkBehaviour
     public float JumpForce = 5f;
     public float GravityValue = -9.81f;
 
-    [Networked] private int playerIndex { get; set; } // Tracks player index
-    [Networked] private bool isDriver { get; set; } // Tracks if player is the driver
+
+    [Networked] public int playerIndex { get; set; } // Tracks player index
+    [Networked, OnChangedRender(nameof(DeactivePlayer))] private bool isPassenger { get; set; } = true;// Deactivate player if not driver
+
 
     private void Awake()
     {
@@ -34,17 +37,28 @@ public class PlayerMovement : NetworkBehaviour
         {
             TrySwitchScene();
         }
+
+        if (Input.GetKeyDown(KeyCode.E)) // Ensure only Player 1 initiates scene switch
+        {
+            Debug.Log("I still live");
+        }
     }
 
     public override void FixedUpdateNetwork()
     {
         if (SceneManager.GetActiveScene().buildIndex == 1)
         {
-            if (playerIndex == 2) 
+            if (playerIndex == 2)
             {
                 Debug.Log("Player 1 is the driver");
+                isPassenger = !isPassenger; // Toggle passenger status
+                Debug.Log("Player 2 is the passenger");
                 return; // Prevent movement for non-drivers
             }
+        }
+        else
+        {
+            isPassenger = isPassenger;
         }
 
         if (_controller.isGrounded)
@@ -52,7 +66,7 @@ public class PlayerMovement : NetworkBehaviour
             _velocity = new Vector3(0, -1, 0);
         }
 
-        Quaternion cameraRotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
+        Quaternion cameraRotationY = Quaternion.Euler(0, playerCamera.transform.rotation.eulerAngles.y, 0);
         Vector3 move = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Runner.DeltaTime * PlayerSpeed;
 
         _velocity.y += GravityValue * Runner.DeltaTime;
@@ -74,16 +88,13 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (HasStateAuthority)
         {
-            Camera = Camera.main;
-            Camera.GetComponent<FirstPersonCamera>().Target = transform;
+            playerCamera = Camera.main;
+            playerCamera.GetComponent<FirstPersonCamera>().Target = transform;
         }
 
         playerIndex = Runner.LocalPlayer.PlayerId; // Assign player index
         Debug.Log("Player index: " + playerIndex);
-        foreach (var player in Runner.ActivePlayers)
-        {
-            Debug.Log("Player in lobby: " + player.PlayerId);
-        }
+        Debug.Log("Player spawned");
     }
 
     void TrySwitchScene()
@@ -94,5 +105,10 @@ public class PlayerMovement : NetworkBehaviour
         {
             Debug.Log("Player in lobby: " + player.PlayerId);
         }
+    }
+
+    void DeactivePlayer()
+    {
+        gameObject.SetActive(isPassenger);
     }
 }
