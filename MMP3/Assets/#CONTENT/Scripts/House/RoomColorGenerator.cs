@@ -26,11 +26,6 @@ public class RoomColorGenerator : EditorWindow
         FloorMaterial = (Material)EditorGUILayout.ObjectField("Floor Material", FloorMaterial, typeof(Material), false);
         WallMaterial = (Material)EditorGUILayout.ObjectField("Wall Material", WallMaterial, typeof(Material), false);
 
-        // FloorPrefab = (GameObject)EditorGUILayout.ObjectField("Floor Prefab", FloorPrefab, typeof(GameObject), false);
-        // WallPrefab = (GameObject)EditorGUILayout.ObjectField("Wall Prefab", WallPrefab, typeof(GameObject), false);
-
-        // FloorColor = EditorGUILayout.ColorField("Floor Color", FloorColor);
-        // WallColor = EditorGUILayout.ColorField("Wall Color", WallColor);
 
         if (GUILayout.Button("Generate Room"))
         {
@@ -57,13 +52,13 @@ public class RoomColorGenerator : EditorWindow
             Renderer renderer = child.GetComponent<Renderer>();
             if (child.name.StartsWith("Floor"))
             {
-                
+
                 if (renderer != null)
                 {
                     renderer.sharedMaterial = FloorMaterial;
                 }
             }
-            else if (child.name.StartsWith("Wall") || child.name.StartsWith("Door"))
+            else if (child.name.StartsWith("Wall") || child.name.StartsWith("Door") || child.name.StartsWith("Window"))
             {
 
                 // Ensure the object has multiple materials before modifying
