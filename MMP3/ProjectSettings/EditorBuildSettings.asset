@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/#CONTENT/Scenes/Isa_Prototyp.unity
     guid: e7f0b03c202d25444945625ba34d98f0
+  - enabled: 1
+    path: Assets/#CONTENT/Scenes/Tutorial.unity
+    guid: ec8de827f46ea6640a8ac09cf38d4ec8
   m_configObjects: {}
