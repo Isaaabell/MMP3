@@ -13,8 +13,8 @@ public class UIManagerTutorial : MonoBehaviour
     [SerializeField] private GameObject tutorialCanvas;
     [SerializeField] private GameObject firstDialogueCanvas;
     [SerializeField] private GameObject secondDialogueCanvas;
-    private bool allTriggeredLogged = false; 
-    
+    private bool allTriggeredLogged = false;
+    public bool allItemsStolen = false;
     public void Start()
     {
 
@@ -36,9 +36,6 @@ public class UIManagerTutorial : MonoBehaviour
         foreach (var objects in levelTwoObjects)
         {
             Item item = objects.GetComponent<Item>();
-
-            Debug.Log(item.tutorialboolSmallItem);
-
             if (item == null || !item.tutorialboolSmallItem)
             {
                 allPickedup = false;
@@ -49,7 +46,7 @@ public class UIManagerTutorial : MonoBehaviour
         if (allPickedup && !allTriggeredLogged) 
         {
             Debug.Log("Alle dinge gestohlen");
-            //bool to allowe leave house
+            allItemsStolen = true;//bool to allowe leave house
             allTriggeredLogged = true;
         }
     }
