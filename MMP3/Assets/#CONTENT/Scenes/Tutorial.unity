@@ -3557,6 +3557,8 @@ GameObject:
   - component: {fileID: 871397361}
   - component: {fileID: 871397362}
   - component: {fileID: 871397363}
+  - component: {fileID: 871397365}
+  - component: {fileID: 871397364}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -3576,10 +3578,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cee3d9355b7ac1e4eb70985bb67f33e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
   lookSpeed: 2
-  gravity: -9.81
   canvas: {fileID: 1766325677}
+  isCar: 0
+  tutorialMovePlayer: {fileID: 871397364}
+  tutorialMoveCar: {fileID: 871397365}
 --- !u!143 &871397359
 CharacterController:
   m_ObjectHideFlags: 0
@@ -3682,6 +3685,32 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eae40ac0c7a8d0347be524a01515f258, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &871397364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 871397357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a593f6732c7c33e4ca467a717d119c0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3
+  gravity: -9.81
+--- !u!114 &871397365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 871397357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93a23550077a86b498c69634f961cd51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &876875807

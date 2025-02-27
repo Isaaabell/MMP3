@@ -32,6 +32,8 @@ public class TutorialLeaveHouseScript : MonoBehaviour
                     {
                         controller.enabled = true; // Wieder aktivieren
                     }
+                    
+                    player.GetComponent<TutorialScript>().isCar = true;
                 }
                 else
                 {
