@@ -10,6 +10,7 @@ public class PlayerMovement : NetworkBehaviour
     public Camera playerCamera;
 
     private CharacterController _controller;
+    private MeshRenderer _meshRenderer;
 
     public float PlayerSpeed = 2f;
     public float JumpForce = 5f;
@@ -25,6 +26,7 @@ public class PlayerMovement : NetworkBehaviour
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
+        _meshRenderer = GetComponent<MeshRenderer>();
         DontDestroyOnLoad(this.gameObject);
     }
 
@@ -61,19 +63,20 @@ public class PlayerMovement : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
+        // Reset isPassenger when not in scene 1
         if (SceneManager.GetActiveScene().buildIndex == 1)
         {
             if (playerIndex == 2)
             {
                 Debug.Log("Player 1 is the driver");
-                isPassenger = !isPassenger; // Toggle passenger status
+                isPassenger = false; // Deactivate Player 2 in scene 1
                 Debug.Log("Player 2 is the passenger");
                 return; // Prevent movement for non-drivers
             }
         }
-        else
+        else if (SceneManager.GetActiveScene().buildIndex == 2)
         {
-            isPassenger = isPassenger;
+            isPassenger = true;
         }
 
         if (_controller.isGrounded)
@@ -132,7 +135,8 @@ public class PlayerMovement : NetworkBehaviour
 
     void DeactivePlayer()
     {
-        gameObject.SetActive(isPassenger);
+        _controller.enabled = isPassenger;
+        _meshRenderer.enabled = isPassenger;
     }
 
     void TryPickUpItem()
@@ -143,7 +147,7 @@ public class PlayerMovement : NetworkBehaviour
             Item item = hit.transform.GetComponent<Item>();
             if (item != null && !item.IsCarried)
             {
-                item.PickUp(transform);
+                item.PickUp2(this);
                 _carriedItem = item;
             }
         }
@@ -153,7 +157,7 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (_carriedItem != null)
         {
-            _carriedItem.Drop();
+            _carriedItem.Drop2();
             _carriedItem = null;
         }
     }
