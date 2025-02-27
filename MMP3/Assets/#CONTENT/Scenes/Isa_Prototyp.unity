@@ -281,7 +281,7 @@ GameObject:
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &25154679
 Transform:
   m_ObjectHideFlags: 0
@@ -976,6 +976,7 @@ MonoBehaviour:
   tutorialCanvas: {fileID: 808420141}
   firstDialogueCanvas: {fileID: 1587534678}
   secondDialogueCanvas: {fileID: 322789697}
+  allItemsStolen: 0
 --- !u!4 &149443992
 Transform:
   m_ObjectHideFlags: 0
@@ -2719,7 +2720,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &401493525
 Transform:
   m_ObjectHideFlags: 0
@@ -3990,6 +3991,9 @@ MonoBehaviour:
   priceLevel: 123
   tutorialboolSmallItem: 0
   tutorialboolBigItem: 0
+  _IsCarried:
+    _value: 0
+  _NetworkedPosition: {x: 0, y: 0, z: 0}
 --- !u!65 &681005210
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4712,6 +4716,7 @@ MonoBehaviour:
   tutorialCanvas: {fileID: 0}
   firstDialogueCanvas: {fileID: 0}
   secondDialogueCanvas: {fileID: 0}
+  allItemsStolen: 0
 --- !u!114 &808420144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6754,6 +6759,9 @@ MonoBehaviour:
   priceLevel: 123
   tutorialboolSmallItem: 0
   tutorialboolBigItem: 0
+  _IsCarried:
+    _value: 0
+  _NetworkedPosition: {x: 0, y: 0, z: 0}
 --- !u!65 &1137573004
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7115,6 +7123,9 @@ MonoBehaviour:
   priceLevel: 123
   tutorialboolSmallItem: 0
   tutorialboolBigItem: 0
+  _IsCarried:
+    _value: 0
+  _NetworkedPosition: {x: 0, y: 0, z: 0}
 --- !u!65 &1178117323
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9793,6 +9804,9 @@ MonoBehaviour:
   priceLevel: 123
   tutorialboolSmallItem: 0
   tutorialboolBigItem: 0
+  _IsCarried:
+    _value: 0
+  _NetworkedPosition: {x: 0, y: 0, z: 0}
 --- !u!65 &1521317207
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10071,6 +10085,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lookSpeed: 2
   canvas: {fileID: 188691967}
+  isCar: 0
   tutorialMovePlayer: {fileID: 0}
   tutorialMoveCar: {fileID: 0}
 --- !u!143 &1576345767
@@ -10926,6 +10941,171 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2638999688348733142, guid: 400efd40a935b9d4481ed5311fb9725d, type: 3}
   m_PrefabInstance: {fileID: 1712911894}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1715606977
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1715606984}
+  - component: {fileID: 1715606983}
+  - component: {fileID: 1715606982}
+  - component: {fileID: 1715606981}
+  - component: {fileID: 1715606980}
+  - component: {fileID: 1715606979}
+  - component: {fileID: 1715606978}
+  m_Layer: 0
+  m_Name: Cube
+  m_TagString: Item
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1715606978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715606977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2006781039
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 1715606980}
+  - {fileID: 1715606979}
+  ForceRemoteRenderTimeframe: 0
+--- !u!114 &1715606979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715606977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d735a1033b440748adb05fb46826228, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemType: 1
+  weight: 0
+  priceLevel: 0
+  tutorialboolSmallItem: 0
+  tutorialboolBigItem: 0
+  _IsCarried:
+    _value: 0
+  _NetworkedPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &1715606980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715606977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0.15
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
+--- !u!65 &1715606981
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715606977}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1715606982
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715606977}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1715606983
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715606977}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1715606984
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715606977}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.74, y: 0.66, z: -1.04}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1748810727
 GameObject:
   m_ObjectHideFlags: 0
@@ -12456,7 +12636,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2073034731
 Transform:
   m_ObjectHideFlags: 0
@@ -13047,6 +13227,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lookSpeed: 2
   canvas: {fileID: 808420142}
+  isCar: 0
   tutorialMovePlayer: {fileID: 2126398446}
   tutorialMoveCar: {fileID: 2126398447}
 --- !u!143 &2126398445
@@ -13088,7 +13269,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
-  lookSpeed: 2
   gravity: -9.81
 --- !u!114 &2126398447
 MonoBehaviour:
@@ -13102,6 +13282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93a23550077a86b498c69634f961cd51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 3
 --- !u!1001 &2128523228
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13171,3 +13352,4 @@ SceneRoots:
   - {fileID: 2073034731}
   - {fileID: 835728102}
   - {fileID: 401493525}
+  - {fileID: 1715606984}

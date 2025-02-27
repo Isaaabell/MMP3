@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: -8451697684389022787}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -124,10 +124,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca745c18d2e3c684bbb7711e929464e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Camera: {fileID: 0}
+  playerCamera: {fileID: 0}
   PlayerSpeed: 2
   JumpForce: 5
   GravityValue: -9.81
+  _playerIndex: 0
 --- !u!114 &6906497056358218354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,9 +163,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MeshRenderer: {fileID: 1324374951642199019}
-  Collider: {fileID: 5887494121760759989}
   _NetworkedColor: {r: 0, g: 0, b: 0, a: 0}
-  _isActive: 0
 --- !u!114 &5117530320090623118
 MonoBehaviour:
   m_ObjectHideFlags: 0

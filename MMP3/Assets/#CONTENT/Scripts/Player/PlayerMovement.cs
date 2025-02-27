@@ -19,6 +19,8 @@ public class PlayerMovement : NetworkBehaviour
     [Networked] public int playerIndex { get; set; } // Tracks player index
     [Networked, OnChangedRender(nameof(DeactivePlayer))] private bool isPassenger { get; set; } = true;// Deactivate player if not driver
 
+    private Item _carriedItem = null;
+
 
     private void Awake()
     {
@@ -33,7 +35,7 @@ public class PlayerMovement : NetworkBehaviour
             _jumpPressed = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.F) && HasStateAuthority) // Ensure only Player 1 initiates scene switch
+        if (Input.GetKeyDown(KeyCode.Q) && HasStateAuthority) // Ensure only Player 1 initiates scene switch
         {
             TrySwitchScene();
         }
@@ -41,6 +43,19 @@ public class PlayerMovement : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.E)) // Ensure only Player 1 initiates scene switch
         {
             Debug.Log("I still live");
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Debug.Log("F key was pressed");
+            if (_carriedItem == null)
+            {
+                TryPickUpItem();
+            }
+            else
+            {
+                DropItem();
+            }
         }
     }
 
@@ -99,16 +114,47 @@ public class PlayerMovement : NetworkBehaviour
 
     void TrySwitchScene()
     {
-        Runner.LoadScene(SceneRef.FromIndex(1));
-        Debug.Log("Switching scene");
-        foreach (var player in Runner.ActivePlayers)
+        if (SceneManager.GetActiveScene().buildIndex == 0)
         {
-            Debug.Log("Player in lobby: " + player.PlayerId);
+            Runner.LoadScene(SceneRef.FromIndex(1));
+            Debug.Log("Switching scene");
+            foreach (var player in Runner.ActivePlayers)
+            {
+                Debug.Log("Player in lobby: " + player.PlayerId);
+            }
         }
+        else if (SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            Runner.LoadScene(SceneRef.FromIndex(2));
+        }
+
     }
 
     void DeactivePlayer()
     {
         gameObject.SetActive(isPassenger);
+    }
+
+    void TryPickUpItem()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, 2f))
+        {
+            Item item = hit.transform.GetComponent<Item>();
+            if (item != null && !item.IsCarried)
+            {
+                item.PickUp(transform);
+                _carriedItem = item;
+            }
+        }
+    }
+
+    void DropItem()
+    {
+        if (_carriedItem != null)
+        {
+            _carriedItem.Drop();
+            _carriedItem = null;
+        }
     }
 }
