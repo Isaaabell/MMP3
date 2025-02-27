@@ -3,6 +3,7 @@ using UnityEngine;
 public class ItemDropZone : MonoBehaviour
 {
     private bool playerInZone = false;
+    
     private ItemInteraction itemInteraction;
 
     private void OnTriggerEnter(Collider other)
@@ -31,6 +32,7 @@ public class ItemDropZone : MonoBehaviour
         {
             // Debug.Log("Deactivating item: " + item.name);
             item.gameObject.SetActive(false); // End Point Big items
+            item.tutorialboolBigItem = true;
         }
         else
         {

@@ -11,6 +11,8 @@ public class Item : MonoBehaviour
 
     private bool isCarried = false;
     private ItemDropZone dropZone = null;
+    public bool tutorialboolSmallItem = false;
+    public bool tutorialboolBigItem = false;
 
     public void PickUp(Transform player)
     {
@@ -18,6 +20,7 @@ public class Item : MonoBehaviour
         if (itemType == ItemType.Small)
         {
             gameObject.SetActive(false); // End Point Small items
+            tutorialboolSmallItem = true;
         }
         else if (itemType == ItemType.Big)
         {

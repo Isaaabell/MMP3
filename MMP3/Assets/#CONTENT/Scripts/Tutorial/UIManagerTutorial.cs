@@ -8,6 +8,7 @@ public class UIManagerTutorial : MonoBehaviour
     private bool firstDialogue = false;
     private bool secondDialogue = false;
     [SerializeField] private List<GameObject> movementMarkers;
+    [SerializeField] private List<GameObject> levelTwoObjects;
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject tutorialCanvas;
     [SerializeField] private GameObject firstDialogueCanvas;
@@ -19,9 +20,36 @@ public class UIManagerTutorial : MonoBehaviour
     }
     public void Update()
     {
-        if (firstDialogue)
+        if(firstDialogue)
         {
             CheckList();
+            CheckListTwo();
+        }
+        
+
+    }
+
+    private void CheckListTwo()
+    {
+        bool allPickedup = true;
+
+        foreach (var objects in levelTwoObjects)
+        {
+            Item item = objects.GetComponent<Item>();
+
+            
+
+            if (item == null || !item.tutorialboolSmallItem && !item.tutorialboolBigItem)
+            {
+                allPickedup = false;
+                break; // Sofort abbrechen, wenn einer nicht getriggert ist
+            }
+        }
+
+        if (allPickedup && !allTriggeredLogged) // Prüfen, ob wir schon geloggt haben
+        {
+            Debug.Log("Alle dinge gestohlen");//mach was wenn alles aufgesammelt ist
+            allTriggeredLogged = true; // Verhindert weiteres Debugging
         }
     }
 
