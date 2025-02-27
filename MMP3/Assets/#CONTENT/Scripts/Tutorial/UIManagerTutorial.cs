@@ -13,7 +13,8 @@ public class UIManagerTutorial : MonoBehaviour
     [SerializeField] private GameObject tutorialCanvas;
     [SerializeField] private GameObject firstDialogueCanvas;
     [SerializeField] private GameObject secondDialogueCanvas;
-    private bool allTriggeredLogged = false; //damit nur einmal getriggered wird wenn alle true sind
+    private bool allTriggeredLogged = false; 
+    
     public void Start()
     {
 
@@ -25,31 +26,31 @@ public class UIManagerTutorial : MonoBehaviour
             CheckList();
             CheckListTwo();
         }
-        
-
     }
 
     private void CheckListTwo()
     {
         bool allPickedup = true;
+        bool allTriggeredLogged = false;
 
         foreach (var objects in levelTwoObjects)
         {
             Item item = objects.GetComponent<Item>();
 
-            
+            Debug.Log(item.tutorialboolSmallItem);
 
-            if (item == null || !item.tutorialboolSmallItem && !item.tutorialboolBigItem)
+            if (item == null || !item.tutorialboolSmallItem)
             {
                 allPickedup = false;
-                break; // Sofort abbrechen, wenn einer nicht getriggert ist
+                break; 
             }
         }
 
-        if (allPickedup && !allTriggeredLogged) // Prüfen, ob wir schon geloggt haben
+        if (allPickedup && !allTriggeredLogged) 
         {
-            Debug.Log("Alle dinge gestohlen");//mach was wenn alles aufgesammelt ist
-            allTriggeredLogged = true; // Verhindert weiteres Debugging
+            Debug.Log("Alle dinge gestohlen");
+            //bool to allowe leave house
+            allTriggeredLogged = true;
         }
     }
 
@@ -64,14 +65,14 @@ public class UIManagerTutorial : MonoBehaviour
             if (trigger == null || !trigger.isTriggered)
             {
                 allTriggered = false;
-                break; // Sofort abbrechen, wenn einer nicht getriggert ist
+                break; 
             }
         }
 
-        if (allTriggered && !allTriggeredLogged) // Prüfen, ob wir schon geloggt haben
+        if (allTriggered && !allTriggeredLogged) 
         {
             TutorialStageTwo();
-            allTriggeredLogged = true; // Verhindert weiteres Debugging
+            allTriggeredLogged = true; 
         }
     }
 
@@ -87,7 +88,7 @@ public class UIManagerTutorial : MonoBehaviour
             Debug.LogError("Spieler-GameObject ist nicht zugewiesen!");
         }
 
-        // Canvas aktivieren
+        
         if (tutorialCanvas != null)
         {
             tutorialCanvas.SetActive(true);

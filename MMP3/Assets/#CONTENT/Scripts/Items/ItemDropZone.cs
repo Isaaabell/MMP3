@@ -32,7 +32,7 @@ public class ItemDropZone : MonoBehaviour
         {
             // Debug.Log("Deactivating item: " + item.name);
             item.gameObject.SetActive(false); // End Point Big items
-            item.tutorialboolBigItem = true;
+            item.tutorialboolSmallItem = true;
         }
         else
         {
