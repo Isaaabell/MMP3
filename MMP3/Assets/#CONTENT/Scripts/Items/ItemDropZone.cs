@@ -26,7 +26,7 @@ public class ItemDropZone : MonoBehaviour
         }
     }
 
-    public void DeactivateItem(Item item)
+    public void DeactivateItem(Item1 item)
     {
         if (item != null)
         {

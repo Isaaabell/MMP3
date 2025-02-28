@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class ItemInteraction : MonoBehaviour
 {
-    private Item currentItem = null;
-    private Item carriedItem = null; // For big items
+    private Item1 currentItem = null;
+    private Item1 carriedItem = null; // For big items
     private ItemDropZone dropZone = null; 
 
     void Update()
@@ -30,7 +30,7 @@ public class ItemInteraction : MonoBehaviour
             {
                 // Debug.Log("Picking up item");
                 currentItem.PickUp(transform);
-                if (currentItem.itemType == Item.ItemType.Big)
+                if (currentItem.itemType == Item1.ItemType.Big)
                 {
                     carriedItem = currentItem;
                 }
@@ -40,7 +40,7 @@ public class ItemInteraction : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Item item))
+        if (other.TryGetComponent(out Item1 item))
         {
             // Debug.Log("Entered item: " + item.name);
             currentItem = item;
@@ -54,7 +54,7 @@ public class ItemInteraction : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out Item item) && item == currentItem)
+        if (other.TryGetComponent(out Item1 item) && item == currentItem)
         {
             // Debug.Log("Exited item: " + item.name);
             currentItem = null;

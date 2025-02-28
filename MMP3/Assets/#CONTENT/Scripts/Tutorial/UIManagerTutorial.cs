@@ -35,7 +35,7 @@ public class UIManagerTutorial : MonoBehaviour
 
         foreach (var objects in levelTwoObjects)
         {
-            Item item = objects.GetComponent<Item>();
+            Item1 item = objects.GetComponent<Item1>();
             if (item == null || !item.tutorialboolSmallItem)
             {
                 allPickedup = false;

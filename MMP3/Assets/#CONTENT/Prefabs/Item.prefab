@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2638999688348733142}
   - component: {fileID: 4165589564086053379}
   - component: {fileID: 4596597070620942271}
+  - component: {fileID: 24943529124370027}
   - component: {fileID: 5860469680538175044}
   - component: {fileID: 4138569820453440614}
   m_Layer: 0
@@ -86,6 +87,23 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &24943529124370027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8126862127233553708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0403d7611478d584b80e8dd1e69ab294, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemType: 0
+  weight: 0
+  priceLevel: 0
+  tutorialboolSmallItem: 0
+  tutorialboolBigItem: 0
 --- !u!65 &5860469680538175044
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -114,7 +132,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8126862127233553708}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d735a1033b440748adb05fb46826228, type: 3}
   m_Name: 
@@ -122,6 +140,13 @@ MonoBehaviour:
   itemType: 1
   weight: 0
   priceLevel: 123
+  tutorialboolSmallItem: 0
+  tutorialboolBigItem: 0
+  _IsCarried:
+    _value: 0
+  _NetworkedPosition: {x: 0, y: 0, z: 0}
+  _NetworkedRotation: {x: 0, y: 0, z: 0, w: 0}
+  _Carrier: {fileID: 0}
 --- !u!1001 &4450270210414629472
 PrefabInstance:
   m_ObjectHideFlags: 0
