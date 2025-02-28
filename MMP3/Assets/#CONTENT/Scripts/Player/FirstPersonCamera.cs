@@ -1,8 +1,7 @@
-using ExitGames.Client.Photon.StructWrapping;
 using Fusion;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using System.Collections;
 
 public class FirstPersonCamera : MonoBehaviour
 {
@@ -11,11 +10,32 @@ public class FirstPersonCamera : MonoBehaviour
 
     private float verticalRotation;
     private float horizontalRotation;
+    private Transform originalTarget; // Track the original camera target
 
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
     }
+
+    private void Start()
+    {
+        // Start a coroutine to wait for the Target to be assigned
+        StartCoroutine(WaitForTarget());
+    }
+
+    private IEnumerator WaitForTarget()
+    {
+        // Wait until the Target is assigned
+        while (Target == null)
+        {
+            yield return null; // Wait for the next frame
+        }
+
+        // Store the original target once it's assigned
+        originalTarget = Target;
+        Debug.Log("Original camera target set to: " + originalTarget.name);
+    }
+
     void LateUpdate()
     {
         if (Target == null)
@@ -23,16 +43,31 @@ public class FirstPersonCamera : MonoBehaviour
             return;
         }
 
-        if (Target.GetComponent<PlayerMovement>().playerIndex == 2 && SceneManager.GetActiveScene().buildIndex == 1)
+        // Check if the scene has changed
+        if (SceneManager.GetActiveScene().buildIndex != 1)
         {
-            var player1 = FindPlayer1();
-            if (player1 != null)
+            // Reset the camera target to the original target
+            if (Target != originalTarget)
             {
-                Target = player1.transform;
-                Debug.Log("Camera target set to Player 1 for Player 2");
+                Target = originalTarget;
+                Debug.Log("Camera target reset to original target: " + originalTarget.name);
+            }
+        }
+        else if (SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            // Handle camera target for Player 2 in scene 1
+            if (Target.GetComponent<PlayerMovement>().playerIndex == 2)
+            {
+                var player1 = FindPlayer1();
+                if (player1 != null)
+                {
+                    Target = player1.transform;
+                    Debug.Log("Camera target set to Player 1 for Player 2");
+                }
             }
         }
 
+        // Update camera position and rotation
         transform.position = Target.position;
 
         float mouseX = Input.GetAxis("Mouse X");
