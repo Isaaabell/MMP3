@@ -15,6 +15,9 @@ public class UIManagerTutorial : MonoBehaviour
     [SerializeField] private GameObject secondDialogueCanvas;
     private bool allTriggeredLogged = false;
     public bool allItemsStolen = false;
+
+    [SerializeField] private GameObject Level2SpawnPoint;
+    // [SerializeField] private GameObject Level3SpawnPoint;
     public void Start()
     {
 
@@ -77,7 +80,8 @@ public class UIManagerTutorial : MonoBehaviour
     {
         if (player != null)
         {
-            player.transform.position = new Vector3(13f, 0.5f, 0f);
+            // player.transform.position = new Vector3(13f, 0.5f, 0f);
+            player.transform.position = Level2SpawnPoint.transform.position;
             Debug.Log("Spieler wurde in den zweiten Raum teleportiert!");
         }
         else

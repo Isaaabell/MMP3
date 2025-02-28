@@ -27,6 +27,7 @@ public class TutorialLeaveHouseScript : MonoBehaviour
                     }
 
                     player.transform.position = new Vector3(-300f, 10f, 300f);
+                    // player.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
 
                     if (controller != null)
                     {
