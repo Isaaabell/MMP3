@@ -16,12 +16,11 @@ public class PlayerMovement : NetworkBehaviour
     public float JumpForce = 5f;
     public float GravityValue = -9.81f;
 
-
     [Networked] public int playerIndex { get; set; } // Tracks player index
     [Networked, OnChangedRender(nameof(DeactivePlayer))] private bool isPassenger { get; set; } = true;// Deactivate player if not driver
 
     private Item _carriedItem = null;
-
+    private bool _isInDropZone = false; // Track if player is in drop zone
 
     private void Awake()
     {
@@ -130,7 +129,6 @@ public class PlayerMovement : NetworkBehaviour
         {
             Runner.LoadScene(SceneRef.FromIndex(2));
         }
-
     }
 
     void DeactivePlayer()
@@ -157,8 +155,22 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (_carriedItem != null)
         {
-            _carriedItem.Drop2();
-            _carriedItem = null;
+            if (_isInDropZone)
+            {
+                // Delete the item if dropped in the drop zone
+                Runner.Despawn(_carriedItem.Object);
+                _carriedItem = null;
+            }
+            else
+            {
+                _carriedItem.Drop2();
+                _carriedItem = null;
+            }
         }
+    }
+
+    public void SetInDropZone(bool inDropZone)
+    {
+        _isInDropZone = inDropZone;
     }
 }
