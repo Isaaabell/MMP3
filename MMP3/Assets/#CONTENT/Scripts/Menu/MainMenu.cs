@@ -17,11 +17,11 @@ public class MainMenu : MonoBehaviour
 
     public void TutorialBtn()
     {
-        SceneManager.LoadSceneAsync("Tutorial");  //richtigen namen der scene eintragen
+        SceneManager.LoadSceneAsync("Tutorial");  //TODO: Corect scene name if needed
     }
     public void PlayBtn()
     {
-        SceneManager.LoadSceneAsync("Game");
+        SceneManager.LoadSceneAsync("Game"); //TODO: Corect scene name if needed
     }
 
     public void OptionsBtn()
