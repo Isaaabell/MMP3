@@ -73,6 +73,9 @@ public class FirstPersonCamera : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
 
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         verticalRotation -= mouseY * MouseSensitivity;
         verticalRotation = Mathf.Clamp(verticalRotation, -70f, 70f);
 
