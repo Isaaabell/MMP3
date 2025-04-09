@@ -15,6 +15,9 @@ public class MovementPlayer : MonoBehaviour
     private Vector2 lookInput;
     private float cameraPitch = 0f;
 
+    [Header("Jumping")]
+    public float jumpForce = 5f;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -26,6 +29,8 @@ public class MovementPlayer : MonoBehaviour
         // Move based on input
         Vector3 move = transform.forward * moveInput.y + transform.right * moveInput.x;
         rb.MovePosition(rb.position + move * moveSpeed * Time.fixedDeltaTime);
+
+        Debug.Log(IsGrounded());
     }
 
     private void LateUpdate()
@@ -53,5 +58,27 @@ public class MovementPlayer : MonoBehaviour
     {
         lookInput = context.ReadValue<Vector2>();
     }
-    
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (IsGrounded())
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
+    }
+
+    private bool IsGrounded()
+    {
+        Ray ray = new Ray(this.transform.position + Vector3.up * 0.25f, Vector3.down);
+        if (Physics.Raycast(ray, out RaycastHit hit, 1.4f))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
 }
