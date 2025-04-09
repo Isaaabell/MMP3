@@ -12,6 +12,7 @@ public class MovementPlayer : MonoBehaviour
     private Vector2 moveInput;
     private Vector2 lookInput;
     private float cameraPitch = 0f;
+    private float deadzone = 0.1f; // Deadzone for input
 
     [Header("Camera")]
     private Transform cameraTransform;  // Assign the camera child in inspector
@@ -68,11 +69,21 @@ public class MovementPlayer : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
+        // Apply deadzone
+        if (moveInput.magnitude < deadzone)
+        {
+            moveInput = Vector2.zero;
+        }
     }
 
     public void OnLook(InputAction.CallbackContext context)
     {
         lookInput = context.ReadValue<Vector2>();
+        // Apply deadzone
+        if (lookInput.magnitude < deadzone)
+        {
+            lookInput = Vector2.zero;
+        }
     }
 
     public void OnJump(InputAction.CallbackContext context)
