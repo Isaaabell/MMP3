@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1393129348806153147
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8578766353650163082}
+  m_Layer: 0
+  m_Name: Held
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8578766353650163082
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1393129348806153147}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.814}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6886079734590274293}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5887494121760759989
 GameObject:
   m_ObjectHideFlags: 0
@@ -12,10 +43,12 @@ GameObject:
   - component: {fileID: 3323880912596538605}
   - component: {fileID: 1324374951642199019}
   - component: {fileID: 3950995091318701440}
+  - component: {fileID: 2114273689706463892}
   - component: {fileID: 6906497056358218354}
   - component: {fileID: 1643804695824148493}
   - component: {fileID: 5117530320090623118}
   - component: {fileID: -8451697684389022787}
+  - component: {fileID: 6029174720819097921}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -35,7 +68,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 1.2, z: 2.56}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8578766353650163082}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3323880912596538605
@@ -105,6 +139,20 @@ MonoBehaviour:
   JumpForce: 5
   GravityValue: -9.81
   _playerIndex: 0
+--- !u!114 &2114273689706463892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5887494121760759989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf642abeead5cd942ba391ad4ce20ee5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damage: 10
+  PlayerMovement: {fileID: 3950995091318701440}
 --- !u!114 &6906497056358218354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,8 +171,10 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 3950995091318701440}
+  - {fileID: 2114273689706463892}
   - {fileID: 1643804695824148493}
   - {fileID: 5117530320090623118}
+  - {fileID: 6029174720819097921}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &1643804695824148493
 MonoBehaviour:
@@ -183,3 +233,16 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6029174720819097921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5887494121760759989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 731282b1cce5a58429bfd96dfce5e0cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _NetworkedHealth: 100
