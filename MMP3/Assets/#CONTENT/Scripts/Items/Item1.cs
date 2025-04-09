@@ -10,7 +10,7 @@ public class Item1 : MonoBehaviour
     public Weight weight; //ToDo: Implement
     public int priceLevel; //ToDo: Implement
 
-    private ItemDropZone dropZone = null;
+    // private ItemDropZone dropZone = null;
     public bool tutorialboolSmallItem = false;
     public bool tutorialboolBigItem = false;
 

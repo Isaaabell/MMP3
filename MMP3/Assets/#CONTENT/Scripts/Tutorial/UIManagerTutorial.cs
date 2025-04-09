@@ -6,7 +6,7 @@ using UnityEngine;
 public class UIManagerTutorial : MonoBehaviour
 {
     private bool firstDialogue = false;
-    private bool secondDialogue = false;
+    // private bool secondDialogue = false;
     [SerializeField] private List<GameObject> movementMarkers;
     [SerializeField] private List<GameObject> levelTwoObjects;
     [SerializeField] private GameObject player;
