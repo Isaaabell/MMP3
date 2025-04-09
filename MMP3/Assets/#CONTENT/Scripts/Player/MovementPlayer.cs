@@ -8,20 +8,36 @@ public class MovementPlayer : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed = 5f;
     public float lookSensitivity = 2f;
-    public Transform cameraTransform;
-
     private Rigidbody rb;
     private Vector2 moveInput;
     private Vector2 lookInput;
     private float cameraPitch = 0f;
 
-    [Header("Jumping")]
-    public float jumpForce = 5f;
+    [Header("Camera")]
+    private Transform cameraTransform;  // Assign the camera child in inspector
+
+    [Header("Grabbable")]
+    public static bool isGrabbing = false; // Static variable to check if the player is grabbing
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
+
+        // If camera not assigned, try to find it automatically
+        if (cameraTransform == null)
+        {
+            // Try to find a camera in children
+            Camera childCamera = GetComponentInChildren<Camera>();
+            if (childCamera != null)
+            {
+                cameraTransform = childCamera.transform;
+            }
+            else
+            {
+                Debug.LogError("No camera assigned and couldn't find one in children!");
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -30,7 +46,6 @@ public class MovementPlayer : MonoBehaviour
         Vector3 move = transform.forward * moveInput.y + transform.right * moveInput.x;
         rb.MovePosition(rb.position + move * moveSpeed * Time.fixedDeltaTime);
 
-        Debug.Log(IsGrounded());
     }
 
     private void LateUpdate()
@@ -42,9 +57,10 @@ public class MovementPlayer : MonoBehaviour
         cameraPitch -= lookInput.y * lookSensitivity;
         cameraPitch = Mathf.Clamp(cameraPitch, -80f, 80f);
 
-        if (cameraTransform)
+        // Apply camera rotation - this is the missing part
+        if (cameraTransform != null)
         {
-            cameraTransform.localEulerAngles = new Vector3(cameraPitch, 0f, 0f);
+            cameraTransform.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
         }
     }
 
@@ -63,7 +79,16 @@ public class MovementPlayer : MonoBehaviour
     {
         if (IsGrounded())
         {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            rb.AddForce(Vector3.up * 120, ForceMode.Impulse);
+        }
+    }
+
+    public void OnPickUp(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            isGrabbing = !isGrabbing; // Toggle grabbing state
+            Debug.Log("Grabbing: " + isGrabbing);
         }
     }
 
@@ -79,6 +104,4 @@ public class MovementPlayer : MonoBehaviour
             return false;
         }
     }
-
-
 }
