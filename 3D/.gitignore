@@ -22,7 +22,7 @@ autosave/
 *.iff                 # Maya Image format
 *.tga                 # Targa images
 *.exr                 # OpenEXR files
-*.png                 # Optional, if rendered files should not be tracked
+
 renderData/
 cache/
 particles/
