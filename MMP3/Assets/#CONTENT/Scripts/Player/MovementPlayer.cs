@@ -8,7 +8,7 @@ public class MovementPlayer : MonoBehaviour
     [Header("Movement")]
     public float baseSpeed = 5f;
     private float currentSpeed;
-    public float lookSensitivity = 1.5f;
+    private float lookSensitivity = 1f;
     private Rigidbody rb;
     private Vector2 moveInput;
     private Vector2 lookInput;
