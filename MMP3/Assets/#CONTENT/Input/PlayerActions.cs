@@ -368,15 +368,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Throttle"",
-                    ""type"": ""Value"",
-                    ""id"": ""013cc0f2-07bb-4f2d-8aff-3e561310d74a"",
-                    ""expectedControlType"": ""Axis"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -492,7 +483,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         m_CarMovement = asset.FindActionMap("CarMovement", throwIfNotFound: true);
         m_CarMovement_Move = m_CarMovement.FindAction("Move", throwIfNotFound: true);
         m_CarMovement_Brake = m_CarMovement.FindAction("Brake", throwIfNotFound: true);
-        m_CarMovement_Throttle = m_CarMovement.FindAction("Throttle", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -720,14 +710,12 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
     private List<ICarMovementActions> m_CarMovementActionsCallbackInterfaces = new List<ICarMovementActions>();
     private readonly InputAction m_CarMovement_Move;
     private readonly InputAction m_CarMovement_Brake;
-    private readonly InputAction m_CarMovement_Throttle;
     public struct CarMovementActions
     {
         private @PlayerActions m_Wrapper;
         public CarMovementActions(@PlayerActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_CarMovement_Move;
         public InputAction @Brake => m_Wrapper.m_CarMovement_Brake;
-        public InputAction @Throttle => m_Wrapper.m_CarMovement_Throttle;
         public InputActionMap Get() { return m_Wrapper.m_CarMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -743,9 +731,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @Brake.started += instance.OnBrake;
             @Brake.performed += instance.OnBrake;
             @Brake.canceled += instance.OnBrake;
-            @Throttle.started += instance.OnThrottle;
-            @Throttle.performed += instance.OnThrottle;
-            @Throttle.canceled += instance.OnThrottle;
         }
 
         private void UnregisterCallbacks(ICarMovementActions instance)
@@ -756,9 +741,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @Brake.started -= instance.OnBrake;
             @Brake.performed -= instance.OnBrake;
             @Brake.canceled -= instance.OnBrake;
-            @Throttle.started -= instance.OnThrottle;
-            @Throttle.performed -= instance.OnThrottle;
-            @Throttle.canceled -= instance.OnThrottle;
         }
 
         public void RemoveCallbacks(ICarMovementActions instance)
@@ -797,6 +779,5 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnBrake(InputAction.CallbackContext context);
-        void OnThrottle(InputAction.CallbackContext context);
     }
 }

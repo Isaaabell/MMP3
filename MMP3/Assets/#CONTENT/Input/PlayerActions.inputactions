@@ -346,15 +346,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Throttle",
-                    "type": "Value",
-                    "id": "013cc0f2-07bb-4f2d-8aff-3e561310d74a",
-                    "expectedControlType": "Axis",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
                 }
             ],
             "bindings": [

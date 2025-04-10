@@ -60,7 +60,6 @@ public class TeleportPlayer : MonoBehaviour
 
         while (timer > 0)
         {
-            // If players leave during countdown, abort
             if (_players.Count != _neededPlayers)
             {
                 Debug.Log("Player left during countdown. Resetting...");
@@ -74,37 +73,47 @@ public class TeleportPlayer : MonoBehaviour
         }
 
         Debug.Log("Teleporting now!");
-        SceneManager.LoadSceneAsync(_CITYSCENEINDEX);
-        SceneManager.sceneLoaded += (scene, mode) =>
+
+        // Store player data BEFORE scene load
+        var playerData = new List<(int index, string controlScheme, InputDevice[] devices)>();
+
+        foreach (var player in _players)
         {
-            // Loop through the players and instantiate their respective prefabs
-            foreach (var player in _players)
+            var input = player.GetComponent<PlayerInput>();
+            playerData.Add((input.playerIndex, input.currentControlScheme, input.devices.ToArray()));
+        }
+
+        // Destroy old players
+        foreach (var player in _players)
+        {
+            Destroy(player);
+        }
+
+        _players.Clear();
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            for (int i = 0; i < playerData.Count; i++)
             {
-                // Get the PlayerInput component
-                var playerInput = player.GetComponent<PlayerInput>();
+                var data = playerData[i];
 
-                // Log the player index for debugging purposes
-                Debug.Log($"Player {playerInput.playerIndex} is being teleported!");
+                GameObject prefab = data.index == 0 ? _playerPrefab1 : _playerPrefab2;
 
-                // Determine the correct prefab based on playerIndex
-                GameObject playerPrefab = playerInput.playerIndex == 0 ? _playerPrefab1 : _playerPrefab2;
-
-                // Log the prefab chosen for instantiation
-                Debug.Log($"Spawning prefab for Player {playerInput.playerIndex}: {(playerInput.playerIndex == 0 ? "Player1" : "Player2")}");
-
-                // Instantiate the appropriate player prefab using PlayerInput
                 var newPlayer = PlayerInput.Instantiate(
-                    playerPrefab,
-                    playerInput.playerIndex,
-                    controlScheme: playerInput.currentControlScheme,
-                    pairWithDevices: playerInput.devices.ToArray());
+                    prefab,
+                    data.index,
+                    controlScheme: data.controlScheme,
+                    pairWithDevices: data.devices);
 
-                // OPTIONAL: move the new player to the start position (if needed)
                 newPlayer.transform.position = new Vector3(0, 1, 0);
-
-                // Destroy the old player model
-                Destroy(player);
             }
-        };
+
+            SceneManager.sceneLoaded -= OnSceneLoaded; // Clean up the event subscription
+        }
+
+        SceneManager.LoadSceneAsync(_CITYSCENEINDEX);
     }
+
 }
