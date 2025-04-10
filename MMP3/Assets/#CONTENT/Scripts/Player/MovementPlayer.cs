@@ -6,27 +6,35 @@ using UnityEngine.InputSystem;
 public class MovementPlayer : MonoBehaviour
 {
     [Header("Movement")]
-    public float moveSpeed = 5f;
-    public float lookSensitivity = 2f;
+    public float baseSpeed = 5f;
+    private float currentSpeed;
+    public float lookSensitivity = 1.5f;
     private Rigidbody rb;
     private Vector2 moveInput;
     private Vector2 lookInput;
     private float cameraPitch = 0f;
     private float deadzone = 0.1f; // Deadzone for input
-
+    
+    [Header("Grabbing")]
+    [HideInInspector] public bool isGrabbing = false; // Per-player grabbing state
+    
+    // Speed modification properties
+    private float speedModifier = 1.0f;
+    
     [Header("Camera")]
-    private Transform cameraTransform;  // Assign the camera child in inspector
+    public Transform cameraTransform;  // Assign the camera child in inspector
 
-    [Header("Grabbable")]
-    public static bool isGrabbing = false; // Static variable to check if the player is grabbing
 
     private void Awake()
     {
 
         DontDestroyOnLoad(gameObject);
 
-        rb = GetComponent<Rigidbody>();
+       rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
+        
+        // Initialize current speed
+        currentSpeed = baseSpeed;
 
         // If camera not assigned, try to find it automatically
         if (cameraTransform == null)
@@ -42,14 +50,14 @@ public class MovementPlayer : MonoBehaviour
                 Debug.LogError("No camera assigned and couldn't find one in children!");
             }
         }
+
     }
 
     private void FixedUpdate()
     {
-        // Move based on input
+        // Move based on input, using the currentSpeed which might be modified
         Vector3 move = transform.forward * moveInput.y + transform.right * moveInput.x;
-        rb.MovePosition(rb.position + move * moveSpeed * Time.fixedDeltaTime);
-
+        rb.MovePosition(rb.position + move * currentSpeed * Time.fixedDeltaTime);
     }
 
     private void LateUpdate()
@@ -61,11 +69,31 @@ public class MovementPlayer : MonoBehaviour
         cameraPitch -= lookInput.y * lookSensitivity;
         cameraPitch = Mathf.Clamp(cameraPitch, -80f, 80f);
 
-        // Apply camera rotation - this is the missing part
+        // Apply camera rotation
         if (cameraTransform != null)
         {
             cameraTransform.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
         }
+    }
+
+    // Apply a speed modifier when carrying objects
+    public void ApplySpeedModifier(float modifier)
+    {
+        speedModifier = Mathf.Clamp(modifier, 0.1f, 1.0f);
+        UpdateCurrentSpeed();
+    }
+    
+    // Reset speed modifier when dropping objects
+    public void ResetSpeedModifier()
+    {
+        speedModifier = 1.0f;
+        UpdateCurrentSpeed();
+    }
+    
+    // Calculate current speed based on base speed and modifier
+    private void UpdateCurrentSpeed()
+    {
+        currentSpeed = baseSpeed * speedModifier;
     }
 
     // Input System Actions
@@ -99,10 +127,13 @@ public class MovementPlayer : MonoBehaviour
 
     public void OnPickUp(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.performed)
         {
-            isGrabbing = !isGrabbing; // Toggle grabbing state
-            Debug.Log("Grabbing: " + isGrabbing);
+            isGrabbing = true; // Toggle grabbing state for this player only
+        }
+        else if (context.canceled)
+        {
+            isGrabbing = false; // Reset grabbing state when input is released
         }
     }
 
@@ -118,4 +149,5 @@ public class MovementPlayer : MonoBehaviour
             return false;
         }
     }
+
 }

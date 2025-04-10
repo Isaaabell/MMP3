@@ -235,7 +235,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &3332982083871702109
 MonoBehaviour:
@@ -249,8 +249,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2b4d9c599fdf804ba5fd171146b7e6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  baseSpeed: 5
   lookSensitivity: 2
+  isGrabbing: 0
+  cameraTransform: {fileID: 0}
 --- !u!114 &4936410605871305217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,6 +267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 4158716423514727154}
   objectGrabPointTransform: {fileID: 5617927046496573027}
+  pickupDistance: 2
 --- !u!1 &7113677343850708166
 GameObject:
   m_ObjectHideFlags: 0
