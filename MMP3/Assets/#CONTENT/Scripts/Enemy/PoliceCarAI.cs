@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.Splines;
+using UnityEngine.AI;
 
 public class PoliceCarAI : MonoBehaviour
 {
@@ -7,194 +7,147 @@ public class PoliceCarAI : MonoBehaviour
     {
         Patrol,
         Pursuit,
-        ReturnToPatrol
+        Returning
     }
 
-    [Header("State Settings")]
+    [Header("AI Settings")]
     public PoliceState currentState = PoliceState.Patrol;
-    public float detectionRadius = 10f;
-    public float timeToReturnToPatrol = 5f;
+    public float detectionRadius = 15f;
 
-    [Header("Patrol Settings")]
-    public SplineContainer patrolSpline;
-    public float patrolSpeed = 5f;
-    public float rotationSpeed = 90f;
-    private float splineProgress = 0f;
+    [Header("Patrol Distance Settings")]
+    public float minPatrolDistance = 20f;
+    public float maxPatrolDistance = 40f;
 
-    [Header("Pursuit Settings")]
-    public float pursuitSpeed = 8f;
-    public float returnSpeed = 6f;
+    [Header("Movement Settings")]
+    public float patrolSpeed = 8f;
+    public float pursuitSpeed = 12f;
+    public float rotationSpeed = 2f;
+    public float waypointThreshold = 2f;
 
+    private NavMeshAgent agent;
     private Transform player;
-    private float distanceToPlayer;
-    private float timePlayerOutOfRange = 0f;
-    private Vector3 nearestSplinePoint;
-    private float returnStartTime;
-    private Vector3 returnStartPosition;
+    private Vector3 currentPatrolDestination;
+    private float timeSinceLastSawPlayer;
 
     void Start()
     {
+        agent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        
-        if (patrolSpline == null)
-        {
-            Debug.LogError("No patrol spline assigned!");
-            enabled = false;
-        }
+
+        agent.speed = patrolSpeed;
+        agent.angularSpeed = 360f;
+        agent.acceleration = 8f;
+
+        SetRandomPatrolDestination();
     }
 
     void Update()
     {
-        distanceToPlayer = Vector3.Distance(transform.position, player.position);
-
         switch (currentState)
         {
             case PoliceState.Patrol:
-                PatrolState();
+                PatrolBehavior();
                 CheckForPlayer();
                 break;
 
             case PoliceState.Pursuit:
-                PursuitState();
-                CheckIfPlayerLost();
+                PursuitBehavior();
                 break;
 
-            case PoliceState.ReturnToPatrol:
-                ReturnToPatrolState();
+            case PoliceState.Returning:
+                ReturnBehavior();
                 break;
         }
     }
 
-    void PatrolState()
+    void PatrolBehavior()
     {
-        if (patrolSpline == null) return;
-
-        splineProgress += patrolSpeed * Time.deltaTime / patrolSpline.Spline.GetLength();
-        
-        if (splineProgress > 1f)
+        if (agent.remainingDistance < waypointThreshold)
         {
-            splineProgress = 0f;
+            SetRandomPatrolDestination();
         }
 
-        Vector3 position = patrolSpline.EvaluatePosition(splineProgress);
-        Vector3 tangent = patrolSpline.EvaluateTangent(splineProgress);
-        Vector3 upVector = patrolSpline.EvaluateUpVector(splineProgress);
-
-        transform.position = position;
-        
-        if (tangent != Vector3.zero)
+        if (agent.velocity.magnitude > 0.1f)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(tangent, upVector);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            Vector3 moveDirection = agent.velocity.normalized;
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRotation,
+                rotationSpeed * Time.deltaTime
+            );
         }
     }
 
-    void PursuitState()
+    void SetRandomPatrolDestination()
     {
-        Vector3 direction = (player.position - transform.position).normalized;
-        transform.position += direction * pursuitSpeed * Time.deltaTime;
-
-        if (direction != Vector3.zero)
+        int maxTries = 20;
+        for (int i = 0; i < maxTries; i++)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            Vector3 randomDirection = Random.insideUnitSphere * maxPatrolDistance;
+            randomDirection += transform.position;
+            randomDirection.y = transform.position.y;
+
+            if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, maxPatrolDistance, NavMesh.AllAreas))
+            {
+                float distance = Vector3.Distance(transform.position, hit.position);
+                if (distance >= minPatrolDistance && distance <= maxPatrolDistance)
+                {
+                    currentPatrolDestination = hit.position;
+                    agent.SetDestination(currentPatrolDestination);
+                    return;
+                }
+            }
         }
 
-        // Aktualisiere den nächstgelegenen Punkt auf dem Spline während der Verfolgung
-        FindNearestPointOnSpline();
+        Debug.LogWarning("Konnte kein gültiges Ziel im geforderten Distanzbereich finden.");
     }
 
-    void ReturnToPatrolState()
+    void PursuitBehavior()
     {
-        if (patrolSpline == null) return;
+        agent.SetDestination(player.position);
+        timeSinceLastSawPlayer = 0f;
 
-        // Berechne die Fortschrittsrate basierend auf der Entfernung
-        float distanceToTarget = Vector3.Distance(transform.position, nearestSplinePoint);
-        float progress = Mathf.Clamp01((Time.time - returnStartTime) * returnSpeed / distanceToTarget);
-
-        // Sanfte Bewegung zum nächstgelegenen Punkt auf dem Spline
-        transform.position = Vector3.Lerp(returnStartPosition, nearestSplinePoint, progress);
-
-        // Rotation in Bewegungsrichtung
-        Vector3 direction = (nearestSplinePoint - transform.position).normalized;
-        if (direction != Vector3.zero)
+        if (Vector3.Distance(transform.position, player.position) > detectionRadius * 1.2f)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-        }
+            timeSinceLastSawPlayer += Time.deltaTime;
 
-        // Wenn wir nahe genug am Spline sind, zurück zum Patrol-Modus
-        if (distanceToTarget < 0.5f)
+            if (timeSinceLastSawPlayer > 3f)
+            {
+                currentState = PoliceState.Returning;
+                agent.speed = patrolSpeed;
+                SetRandomPatrolDestination();
+            }
+        }
+    }
+
+    void ReturnBehavior()
+    {
+        if (agent.remainingDistance < waypointThreshold)
         {
             currentState = PoliceState.Patrol;
+            agent.speed = patrolSpeed;
         }
     }
 
     void CheckForPlayer()
     {
-        if (distanceToPlayer <= detectionRadius)
+        if (Vector3.Distance(transform.position, player.position) <= detectionRadius)
         {
             currentState = PoliceState.Pursuit;
-            timePlayerOutOfRange = 0f;
-        }
-    }
-
-    void CheckIfPlayerLost()
-    {
-        if (distanceToPlayer > detectionRadius)
-        {
-            timePlayerOutOfRange += Time.deltaTime;
-            if (timePlayerOutOfRange >= timeToReturnToPatrol)
-            {
-                PrepareReturnToPatrol();
-            }
-        }
-        else
-        {
-            timePlayerOutOfRange = 0f;
-        }
-    }
-
-    void PrepareReturnToPatrol()
-    {
-        FindNearestPointOnSpline();
-        returnStartTime = Time.time;
-        returnStartPosition = transform.position;
-        currentState = PoliceState.ReturnToPatrol;
-    }
-
-    void FindNearestPointOnSpline()
-    {
-        if (patrolSpline == null) return;
-
-        float closestDistance = float.MaxValue;
-        float stepSize = 0.01f;
-
-        // Durchsuche den Spline nach dem nächstgelegenen Punkt
-        for (float t = 0; t <= 1f; t += stepSize)
-        {
-            Vector3 point = patrolSpline.EvaluatePosition(t);
-            float distance = Vector3.Distance(transform.position, point);
-
-            if (distance < closestDistance)
-            {
-                closestDistance = distance;
-                nearestSplinePoint = point;
-                splineProgress = t;
-            }
+            agent.speed = pursuitSpeed;
         }
     }
 
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.yellow;
+        Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
-        
-        if (currentState == PoliceState.ReturnToPatrol)
+
+        if (currentState == PoliceState.Patrol)
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawLine(transform.position, nearestSplinePoint);
-            Gizmos.DrawSphere(nearestSplinePoint, 0.5f);
+            Gizmos.DrawLine(transform.position, currentPatrolDestination);
         }
     }
 }
