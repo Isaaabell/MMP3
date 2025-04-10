@@ -218,6 +218,134 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""DronenMovement"",
+            ""id"": ""55bcaf96-6bbe-4bc0-aa06-b9720d9feb2b"",
+            ""actions"": [
+                {
+                    ""name"": ""Forward"",
+                    ""type"": ""Button"",
+                    ""id"": ""da73859b-e4c9-420c-969d-51a32b17c901"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Backward"",
+                    ""type"": ""Button"",
+                    ""id"": ""976309bd-2f59-4dd2-ac94-1e1632091c03"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TurnRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""f4ebb7a8-fc55-4abf-96e9-5ce23db24672"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TurnLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""0389bfce-adcf-4f31-9158-ebecdf62047c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FlyUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""5317786f-1091-4208-a1e4-c1b905ce1570"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FlyDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""f788f20d-cb3d-44f1-a21e-18f0b384939a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""d2d3b670-bb9d-44e4-a9b2-e1cc7cdb58c2"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Forward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5cb5cdf9-92cb-473d-8598-1fb0e16b8f97"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Backward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c5670f70-3c05-49b1-bd12-90dcd85b5a5a"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TurnRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a55544e6-41aa-4990-aab3-cc4523e1aae8"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TurnLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e88b94ce-bcfe-406c-af67-c51933638678"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FlyUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6b59da79-d7ca-4b06-a967-14f3d1ab0e38"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FlyDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -229,6 +357,14 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         m_PlayerMovement_Jump = m_PlayerMovement.FindAction("Jump", throwIfNotFound: true);
         m_PlayerMovement_Grab = m_PlayerMovement.FindAction("Grab", throwIfNotFound: true);
         m_PlayerMovement_Teleport = m_PlayerMovement.FindAction("Teleport", throwIfNotFound: true);
+        // DronenMovement
+        m_DronenMovement = asset.FindActionMap("DronenMovement", throwIfNotFound: true);
+        m_DronenMovement_Forward = m_DronenMovement.FindAction("Forward", throwIfNotFound: true);
+        m_DronenMovement_Backward = m_DronenMovement.FindAction("Backward", throwIfNotFound: true);
+        m_DronenMovement_TurnRight = m_DronenMovement.FindAction("TurnRight", throwIfNotFound: true);
+        m_DronenMovement_TurnLeft = m_DronenMovement.FindAction("TurnLeft", throwIfNotFound: true);
+        m_DronenMovement_FlyUp = m_DronenMovement.FindAction("FlyUp", throwIfNotFound: true);
+        m_DronenMovement_FlyDown = m_DronenMovement.FindAction("FlyDown", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -364,6 +500,92 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         }
     }
     public PlayerMovementActions @PlayerMovement => new PlayerMovementActions(this);
+
+    // DronenMovement
+    private readonly InputActionMap m_DronenMovement;
+    private List<IDronenMovementActions> m_DronenMovementActionsCallbackInterfaces = new List<IDronenMovementActions>();
+    private readonly InputAction m_DronenMovement_Forward;
+    private readonly InputAction m_DronenMovement_Backward;
+    private readonly InputAction m_DronenMovement_TurnRight;
+    private readonly InputAction m_DronenMovement_TurnLeft;
+    private readonly InputAction m_DronenMovement_FlyUp;
+    private readonly InputAction m_DronenMovement_FlyDown;
+    public struct DronenMovementActions
+    {
+        private @PlayerActions m_Wrapper;
+        public DronenMovementActions(@PlayerActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Forward => m_Wrapper.m_DronenMovement_Forward;
+        public InputAction @Backward => m_Wrapper.m_DronenMovement_Backward;
+        public InputAction @TurnRight => m_Wrapper.m_DronenMovement_TurnRight;
+        public InputAction @TurnLeft => m_Wrapper.m_DronenMovement_TurnLeft;
+        public InputAction @FlyUp => m_Wrapper.m_DronenMovement_FlyUp;
+        public InputAction @FlyDown => m_Wrapper.m_DronenMovement_FlyDown;
+        public InputActionMap Get() { return m_Wrapper.m_DronenMovement; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DronenMovementActions set) { return set.Get(); }
+        public void AddCallbacks(IDronenMovementActions instance)
+        {
+            if (instance == null || m_Wrapper.m_DronenMovementActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_DronenMovementActionsCallbackInterfaces.Add(instance);
+            @Forward.started += instance.OnForward;
+            @Forward.performed += instance.OnForward;
+            @Forward.canceled += instance.OnForward;
+            @Backward.started += instance.OnBackward;
+            @Backward.performed += instance.OnBackward;
+            @Backward.canceled += instance.OnBackward;
+            @TurnRight.started += instance.OnTurnRight;
+            @TurnRight.performed += instance.OnTurnRight;
+            @TurnRight.canceled += instance.OnTurnRight;
+            @TurnLeft.started += instance.OnTurnLeft;
+            @TurnLeft.performed += instance.OnTurnLeft;
+            @TurnLeft.canceled += instance.OnTurnLeft;
+            @FlyUp.started += instance.OnFlyUp;
+            @FlyUp.performed += instance.OnFlyUp;
+            @FlyUp.canceled += instance.OnFlyUp;
+            @FlyDown.started += instance.OnFlyDown;
+            @FlyDown.performed += instance.OnFlyDown;
+            @FlyDown.canceled += instance.OnFlyDown;
+        }
+
+        private void UnregisterCallbacks(IDronenMovementActions instance)
+        {
+            @Forward.started -= instance.OnForward;
+            @Forward.performed -= instance.OnForward;
+            @Forward.canceled -= instance.OnForward;
+            @Backward.started -= instance.OnBackward;
+            @Backward.performed -= instance.OnBackward;
+            @Backward.canceled -= instance.OnBackward;
+            @TurnRight.started -= instance.OnTurnRight;
+            @TurnRight.performed -= instance.OnTurnRight;
+            @TurnRight.canceled -= instance.OnTurnRight;
+            @TurnLeft.started -= instance.OnTurnLeft;
+            @TurnLeft.performed -= instance.OnTurnLeft;
+            @TurnLeft.canceled -= instance.OnTurnLeft;
+            @FlyUp.started -= instance.OnFlyUp;
+            @FlyUp.performed -= instance.OnFlyUp;
+            @FlyUp.canceled -= instance.OnFlyUp;
+            @FlyDown.started -= instance.OnFlyDown;
+            @FlyDown.performed -= instance.OnFlyDown;
+            @FlyDown.canceled -= instance.OnFlyDown;
+        }
+
+        public void RemoveCallbacks(IDronenMovementActions instance)
+        {
+            if (m_Wrapper.m_DronenMovementActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IDronenMovementActions instance)
+        {
+            foreach (var item in m_Wrapper.m_DronenMovementActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_DronenMovementActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public DronenMovementActions @DronenMovement => new DronenMovementActions(this);
     public interface IPlayerMovementActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -371,5 +593,14 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnGrab(InputAction.CallbackContext context);
         void OnTeleport(InputAction.CallbackContext context);
+    }
+    public interface IDronenMovementActions
+    {
+        void OnForward(InputAction.CallbackContext context);
+        void OnBackward(InputAction.CallbackContext context);
+        void OnTurnRight(InputAction.CallbackContext context);
+        void OnTurnLeft(InputAction.CallbackContext context);
+        void OnFlyUp(InputAction.CallbackContext context);
+        void OnFlyDown(InputAction.CallbackContext context);
     }
 }
