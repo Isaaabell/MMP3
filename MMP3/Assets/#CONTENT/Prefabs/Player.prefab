@@ -13,13 +13,12 @@ GameObject:
   - component: {fileID: 3774767651478434944}
   - component: {fileID: 4004868470480193890}
   - component: {fileID: 1889443560745526491}
-  - component: {fileID: 8310645231176743327}
   - component: {fileID: 415909804435039132}
   - component: {fileID: 3332982083871702109}
   - component: {fileID: 4936410605871305217}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -202,25 +201,15 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 4f394b19-2670-457d-9fe4-109837a4277f
     m_ActionName: PlayerMovement/Grab[/Keyboard/f,/XInputControllerWindows/rightTrigger]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 594e0103-e42e-40bc-b565-fd2bb91ac96d
+    m_ActionName: PlayerMovement/Teleport[/SwitchProControllerHID/dpad/up]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerMovement
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 298623271416357061}
---- !u!114 &8310645231176743327
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1708217113406029415}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2b4d9c599fdf804ba5fd171146b7e6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
-  lookSensitivity: 2
 --- !u!54 &415909804435039132
 Rigidbody:
   m_ObjectHideFlags: 0

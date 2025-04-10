@@ -22,6 +22,9 @@ public class MovementPlayer : MonoBehaviour
 
     private void Awake()
     {
+
+        DontDestroyOnLoad(gameObject);
+
         rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
 
