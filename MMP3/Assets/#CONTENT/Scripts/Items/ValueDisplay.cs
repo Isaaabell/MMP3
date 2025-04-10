@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEditor.VersionControl;
+using TMPro.EditorUtilities;
 
 public class ValueDisplay : MonoBehaviour
 {
@@ -12,18 +14,27 @@ public class ValueDisplay : MonoBehaviour
     public float maxDisplayDistance = 10f;
     public float minTextSize = 0.5f;
     public float maxTextSize = 1.5f;
+    
+    [Header("Text Settings")]
+    public float fontSize = 4f;
+    public float heightOffset = 1f;
 
     // References
     private TextMeshPro valueText;
     private GameObject textObject;
-
+    
     // Cache all cameras in the scene
     private List<Camera> allCameras = new List<Camera>();
 
+    private void Awake()
+    {
+        // Try to load the TMP font before creating the text
+    }
+
     private void Start()
     {
-        CreateValueDisplay();
         FindAllCameras();
+        CreateValueDisplay();
     }
 
     private void OnEnable()
@@ -43,25 +54,26 @@ public class ValueDisplay : MonoBehaviour
         // Create a new game object for the value text
         textObject = new GameObject("ValueText");
         textObject.transform.SetParent(transform);
-        textObject.transform.localPosition = new Vector3(0, 1f, 0); // Position above object
+        textObject.transform.localPosition = new Vector3(0, heightOffset, 0); // Position above object
 
         // Add TextMeshPro component
         valueText = textObject.AddComponent<TextMeshPro>();
         valueText.text = currencySymbol + itemValue.ToString();
-        valueText.fontSize = 8; // CHANGE THIS VALUE - Lower number = smaller text (default was 36)
+        valueText.fontSize = fontSize;
         valueText.alignment = TextAlignmentOptions.Center;
+        
         // Set color based on value
         SetTextColor();
-
-        // Make text visible from both sides
-        valueText.enableVertexGradient = false;
-        valueText.fontSharedMaterial.EnableKeyword("OUTLINE_ON");
-        valueText.fontSharedMaterial.SetFloat("_OutlineWidth", 0.2f);
-        valueText.fontSharedMaterial.SetColor("_OutlineColor", new Color(0, 0, 0, 0.5f));
+        
+        // Make text visible from both sides - will use the default material
+        valueText.outlineWidth = 0.2f;
+        valueText.outlineColor = new Color(0, 0, 0, 0.5f);
     }
 
     private void SetTextColor()
     {
+        if (valueText == null) return;
+        
         // Set color based on value range
         if (itemValue >= 500)
         {
@@ -117,7 +129,7 @@ public class ValueDisplay : MonoBehaviour
         UpdateTextAppearance(distanceToCamera);
 
         // Make the text face the camera
-        textObject.transform.rotation = closestCamera.transform.rotation;
+        textObject.transform.LookAt(2 * textObject.transform.position - closestCamera.transform.position);
     }
 
     private Camera FindClosestCamera()

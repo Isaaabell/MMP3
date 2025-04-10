@@ -8,19 +8,19 @@ public class MovementPlayer : MonoBehaviour
     [Header("Movement")]
     public float baseSpeed = 5f;
     private float currentSpeed;
-    private float lookSensitivity = 1f;
+    private float lookSensitivity = 4f;
     private Rigidbody rb;
     private Vector2 moveInput;
     private Vector2 lookInput;
     private float cameraPitch = 0f;
     private float deadzone = 0.1f; // Deadzone for input
-    
+
     [Header("Grabbing")]
     [HideInInspector] public bool isGrabbing = false; // Per-player grabbing state
-    
+
     // Speed modification properties
     private float speedModifier = 1.0f;
-    
+
     [Header("Camera")]
     public Transform cameraTransform;  // Assign the camera child in inspector
 
@@ -30,9 +30,8 @@ public class MovementPlayer : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-       rb = GetComponent<Rigidbody>();
-        Cursor.lockState = CursorLockMode.Locked;
-        
+        rb = GetComponent<Rigidbody>();
+
         // Initialize current speed
         currentSpeed = baseSpeed;
 
@@ -58,10 +57,6 @@ public class MovementPlayer : MonoBehaviour
         // Move based on input, using the currentSpeed which might be modified
         Vector3 move = transform.forward * moveInput.y + transform.right * moveInput.x;
         rb.MovePosition(rb.position + move * currentSpeed * Time.fixedDeltaTime);
-    }
-
-    private void LateUpdate()
-    {
         // Rotate player horizontally
         transform.Rotate(Vector3.up * lookInput.x * lookSensitivity);
 
@@ -76,20 +71,25 @@ public class MovementPlayer : MonoBehaviour
         }
     }
 
+    private void LateUpdate()
+    {
+
+    }
+
     // Apply a speed modifier when carrying objects
     public void ApplySpeedModifier(float modifier)
     {
         speedModifier = Mathf.Clamp(modifier, 0.1f, 1.0f);
         UpdateCurrentSpeed();
     }
-    
+
     // Reset speed modifier when dropping objects
     public void ResetSpeedModifier()
     {
         speedModifier = 1.0f;
         UpdateCurrentSpeed();
     }
-    
+
     // Calculate current speed based on base speed and modifier
     private void UpdateCurrentSpeed()
     {
