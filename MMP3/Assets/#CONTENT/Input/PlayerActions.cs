@@ -346,6 +346,129 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""CarMovement"",
+            ""id"": ""04c58d74-53af-4fa9-bab2-f979cd40c47d"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""149779d0-443f-4a4c-93c2-5966b4b95493"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Brake"",
+                    ""type"": ""Button"",
+                    ""id"": ""0a53c5a4-a385-4868-9c85-3b66dba256e1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Throttle"",
+                    ""type"": ""Value"",
+                    ""id"": ""013cc0f2-07bb-4f2d-8aff-3e561310d74a"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""0dababd0-926e-43fb-9293-b2c11f8d404f"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""191b8ce8-da14-40de-88b0-5328a515e2bb"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""b4b3e373-b108-49b2-8f43-663900531ba9"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""a4954092-418f-4ccf-8790-a73e8ab79f37"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""47013890-f562-4335-bef7-126f4e3d3030"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""8f74b130-8a05-4802-9d37-b1656c413e9a"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""405e00ec-b4f4-4081-bc2a-73d7abc2af32"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Brake"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""63ec06c9-5d36-4e76-954a-1bce0fb478df"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Brake"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -365,6 +488,11 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         m_DronenMovement_TurnLeft = m_DronenMovement.FindAction("TurnLeft", throwIfNotFound: true);
         m_DronenMovement_FlyUp = m_DronenMovement.FindAction("FlyUp", throwIfNotFound: true);
         m_DronenMovement_FlyDown = m_DronenMovement.FindAction("FlyDown", throwIfNotFound: true);
+        // CarMovement
+        m_CarMovement = asset.FindActionMap("CarMovement", throwIfNotFound: true);
+        m_CarMovement_Move = m_CarMovement.FindAction("Move", throwIfNotFound: true);
+        m_CarMovement_Brake = m_CarMovement.FindAction("Brake", throwIfNotFound: true);
+        m_CarMovement_Throttle = m_CarMovement.FindAction("Throttle", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -586,6 +714,68 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         }
     }
     public DronenMovementActions @DronenMovement => new DronenMovementActions(this);
+
+    // CarMovement
+    private readonly InputActionMap m_CarMovement;
+    private List<ICarMovementActions> m_CarMovementActionsCallbackInterfaces = new List<ICarMovementActions>();
+    private readonly InputAction m_CarMovement_Move;
+    private readonly InputAction m_CarMovement_Brake;
+    private readonly InputAction m_CarMovement_Throttle;
+    public struct CarMovementActions
+    {
+        private @PlayerActions m_Wrapper;
+        public CarMovementActions(@PlayerActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_CarMovement_Move;
+        public InputAction @Brake => m_Wrapper.m_CarMovement_Brake;
+        public InputAction @Throttle => m_Wrapper.m_CarMovement_Throttle;
+        public InputActionMap Get() { return m_Wrapper.m_CarMovement; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(CarMovementActions set) { return set.Get(); }
+        public void AddCallbacks(ICarMovementActions instance)
+        {
+            if (instance == null || m_Wrapper.m_CarMovementActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_CarMovementActionsCallbackInterfaces.Add(instance);
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
+            @Brake.started += instance.OnBrake;
+            @Brake.performed += instance.OnBrake;
+            @Brake.canceled += instance.OnBrake;
+            @Throttle.started += instance.OnThrottle;
+            @Throttle.performed += instance.OnThrottle;
+            @Throttle.canceled += instance.OnThrottle;
+        }
+
+        private void UnregisterCallbacks(ICarMovementActions instance)
+        {
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
+            @Brake.started -= instance.OnBrake;
+            @Brake.performed -= instance.OnBrake;
+            @Brake.canceled -= instance.OnBrake;
+            @Throttle.started -= instance.OnThrottle;
+            @Throttle.performed -= instance.OnThrottle;
+            @Throttle.canceled -= instance.OnThrottle;
+        }
+
+        public void RemoveCallbacks(ICarMovementActions instance)
+        {
+            if (m_Wrapper.m_CarMovementActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ICarMovementActions instance)
+        {
+            foreach (var item in m_Wrapper.m_CarMovementActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_CarMovementActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public CarMovementActions @CarMovement => new CarMovementActions(this);
     public interface IPlayerMovementActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -602,5 +792,11 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         void OnTurnLeft(InputAction.CallbackContext context);
         void OnFlyUp(InputAction.CallbackContext context);
         void OnFlyDown(InputAction.CallbackContext context);
+    }
+    public interface ICarMovementActions
+    {
+        void OnMove(InputAction.CallbackContext context);
+        void OnBrake(InputAction.CallbackContext context);
+        void OnThrottle(InputAction.CallbackContext context);
     }
 }
