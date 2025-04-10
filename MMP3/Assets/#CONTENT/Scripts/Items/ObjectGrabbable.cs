@@ -16,9 +16,21 @@ public class ObjectGrabbable : MonoBehaviour
     [Header("Item Properties")]
     public ItemType itemType = ItemType.LightItem;
     
+    [Header("Value Properties")]
+    [Tooltip("The monetary value of this item")]
+    public int monetaryValue = 100;
+    [Tooltip("Show the value above this item")]
+    public bool showValue = true;
+    
     [Header("Weight Properties")]
     [Tooltip("Speed modifier when carrying this item (1.0 = no effect, 0.5 = half speed)")]
     private float weightSpeedModifier = 1.0f;
+    
+    [Header("Outline Properties")]
+    public bool enableOutline = true;
+    private float outlineWidth = 10.0f; // Default outline width
+    private Outline outlineComponent;
+    private ValueDisplay valueDisplay;
     
     // Reference to the player that's carrying this object
     private MovementPlayer playerMovement;
@@ -43,6 +55,62 @@ public class ObjectGrabbable : MonoBehaviour
                     break;
             }
         }
+        
+        // Setup outline based on item type
+        if (enableOutline)
+        {
+            SetupOutline();
+        }
+        
+        // Setup value display if enabled
+        if (showValue)
+        {
+            SetupValueDisplay();
+        }
+    }
+    
+    private void SetupOutline()
+    {
+        // Get or add the outline component
+        outlineComponent = GetComponent<Outline>();
+        if (outlineComponent == null)
+        {
+            outlineComponent = gameObject.AddComponent<Outline>();
+        }
+        
+        // Set outline properties
+        outlineComponent.OutlineMode = Outline.Mode.OutlineVisible;
+        outlineComponent.OutlineWidth = outlineWidth;
+        
+        // Set color based on item type
+        switch (itemType)
+        {
+            case ItemType.SmallItem:
+                outlineComponent.OutlineColor = new Color(0.0f, 1f, 0.0f); // Green for collectibles
+                break;
+            case ItemType.LightItem:
+                outlineComponent.OutlineColor = new Color(1f, 0.92f, 0.016f);   // Yellow for light items
+                break;
+            case ItemType.MediumItem:
+                outlineComponent.OutlineColor = new Color(1f, 0.5f, 0.0f);   // Orange for medium items
+                break;
+            case ItemType.HeavyItem:
+                outlineComponent.OutlineColor = new Color(1f, 0.0f, 0.0f);   // Red for heavy items
+                break;
+        }
+    }
+    
+    private void SetupValueDisplay()
+    {
+        // Add or get ValueDisplay component
+        valueDisplay = GetComponent<ValueDisplay>();
+        if (valueDisplay == null)
+        {
+            valueDisplay = gameObject.AddComponent<ValueDisplay>();
+        }
+        
+        // Set the monetary value
+        valueDisplay.itemValue = monetaryValue;
     }
     
     public void Grab(Transform objectGrabPointTransform, MovementPlayer player)
@@ -65,6 +133,12 @@ public class ObjectGrabbable : MonoBehaviour
         {
             playerMovement.ApplySpeedModifier(weightSpeedModifier);
         }
+        
+        // Hide value display when grabbed
+        if (valueDisplay != null)
+        {
+            valueDisplay.enabled = false;
+        }
     }
 
     public void Drop()
@@ -80,6 +154,12 @@ public class ObjectGrabbable : MonoBehaviour
             {
                 playerMovement.ResetSpeedModifier();
                 playerMovement = null;
+            }
+            
+            // Show value display again
+            if (valueDisplay != null)
+            {
+                valueDisplay.enabled = true;
             }
         }
     }
@@ -98,8 +178,24 @@ public class ObjectGrabbable : MonoBehaviour
     private void CollectItem()
     {
         // Implement your item collection logic here
-        // For example, you can destroy the object or add it to an inventory
-        Debug.Log("Collected: " + gameObject.name);
+        Debug.Log("Collected: " + gameObject.name + " (Value: $" + monetaryValue + ")");
+        
+        // If you have a money manager, add the value
+        MoneyManager moneyManager = FindObjectOfType<MoneyManager>();
+        if (moneyManager != null)
+        {
+            moneyManager.AddMoney(monetaryValue);
+        }
+        
         Destroy(gameObject); // Destroy the object after collecting
+    }
+    
+    // Allow other scripts to disable outline if needed
+    public void SetOutlineEnabled(bool enabled)
+    {
+        if (outlineComponent != null)
+        {
+            outlineComponent.enabled = enabled;
+        }
     }
 }

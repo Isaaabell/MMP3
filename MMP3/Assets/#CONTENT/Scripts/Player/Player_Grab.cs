@@ -29,7 +29,6 @@ public class Player_Grab : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(movementPlayer.isGrabbing);
         if (movementPlayer == null) return;
         
         if (movementPlayer.isGrabbing && !isalreadygrabbing)

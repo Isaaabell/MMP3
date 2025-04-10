@@ -1,0 +1,182 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using TMPro;
+
+public class ValueDisplay : MonoBehaviour
+{
+    [Header("Display Settings")]
+    public int itemValue = 100;
+    public string currencySymbol = "$";
+    public float minDisplayDistance = 2f;
+    public float maxDisplayDistance = 10f;
+    public float minTextSize = 0.5f;
+    public float maxTextSize = 1.5f;
+
+    // References
+    private TextMeshPro valueText;
+    private GameObject textObject;
+
+    // Cache all cameras in the scene
+    private List<Camera> allCameras = new List<Camera>();
+
+    private void Start()
+    {
+        CreateValueDisplay();
+        FindAllCameras();
+    }
+
+    private void OnEnable()
+    {
+        if (textObject != null)
+            textObject.SetActive(true);
+    }
+
+    private void OnDisable()
+    {
+        if (textObject != null)
+            textObject.SetActive(false);
+    }
+
+    private void CreateValueDisplay()
+    {
+        // Create a new game object for the value text
+        textObject = new GameObject("ValueText");
+        textObject.transform.SetParent(transform);
+        textObject.transform.localPosition = new Vector3(0, 1f, 0); // Position above object
+
+        // Add TextMeshPro component
+        valueText = textObject.AddComponent<TextMeshPro>();
+        valueText.text = currencySymbol + itemValue.ToString();
+        valueText.fontSize = 8; // CHANGE THIS VALUE - Lower number = smaller text (default was 36)
+        valueText.alignment = TextAlignmentOptions.Center;
+        // Set color based on value
+        SetTextColor();
+
+        // Make text visible from both sides
+        valueText.enableVertexGradient = false;
+        valueText.fontSharedMaterial.EnableKeyword("OUTLINE_ON");
+        valueText.fontSharedMaterial.SetFloat("_OutlineWidth", 0.2f);
+        valueText.fontSharedMaterial.SetColor("_OutlineColor", new Color(0, 0, 0, 0.5f));
+    }
+
+    private void SetTextColor()
+    {
+        // Set color based on value range
+        if (itemValue >= 500)
+        {
+            valueText.color = new Color(1f, 0.84f, 0f); // Gold for high value
+        }
+        else if (itemValue >= 200)
+        {
+            valueText.color = new Color(0.75f, 0.75f, 0.75f); // Silver for medium value
+        }
+        else
+        {
+            valueText.color = new Color(0.72f, 0.45f, 0.2f); // Bronze for low value
+        }
+    }
+
+    private void FindAllCameras()
+    {
+        // Clear the list and find all cameras
+        allCameras.Clear();
+
+        // Find all active cameras in the scene
+        Camera[] cameras = Camera.allCameras;
+        foreach (Camera camera in cameras)
+        {
+            allCameras.Add(camera);
+        }
+
+        // If no cameras were found, try again in the next frame
+        if (allCameras.Count == 0)
+        {
+            Invoke("FindAllCameras", 0.5f);
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (valueText == null || textObject == null) return;
+
+        // Periodically check for new cameras (e.g., if a new player joins)
+        if (Time.frameCount % 60 == 0) // Check every 60 frames
+        {
+            FindAllCameras();
+        }
+
+        // Find the closest camera
+        Camera closestCamera = FindClosestCamera();
+        if (closestCamera == null) return;
+
+        // Calculate distance to closest camera
+        float distanceToCamera = Vector3.Distance(transform.position, closestCamera.transform.position);
+
+        // Update text visibility and size based on distance
+        UpdateTextAppearance(distanceToCamera);
+
+        // Make the text face the camera
+        textObject.transform.rotation = closestCamera.transform.rotation;
+    }
+
+    private Camera FindClosestCamera()
+    {
+        Camera closest = null;
+        float minDistance = float.MaxValue;
+
+        foreach (Camera camera in allCameras)
+        {
+            if (camera == null) continue;
+
+            float distance = Vector3.Distance(transform.position, camera.transform.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                closest = camera;
+            }
+        }
+
+        return closest;
+    }
+
+    private void UpdateTextAppearance(float distance)
+    {
+        if (distance > maxDisplayDistance || distance < minDisplayDistance)
+        {
+            // Hide text if too far or too close
+            valueText.enabled = false;
+        }
+        else
+        {
+            // Show text when in the right distance range
+            valueText.enabled = true;
+
+            // Calculate normalized distance (0-1) within our display range
+            float normalizedDistance = (distance - minDisplayDistance) / (maxDisplayDistance - minDisplayDistance);
+
+            // Invert for size calculation (closer = bigger)
+            float sizeRatio = 1 - normalizedDistance;
+
+            // Calculate text size (larger when closer)
+            float textSize = Mathf.Lerp(minTextSize, maxTextSize, sizeRatio);
+            textObject.transform.localScale = Vector3.one * textSize;
+
+            // Apply a fade effect at the min/max edges
+            float alpha = 1.0f;
+            if (normalizedDistance < 0.1f)
+            {
+                alpha = normalizedDistance / 0.1f; // Fade in at min distance
+            }
+            else if (normalizedDistance > 0.9f)
+            {
+                alpha = (1 - normalizedDistance) / 0.1f; // Fade out at max distance
+            }
+
+            // Apply alpha to text
+            Color textColor = valueText.color;
+            textColor.a = alpha;
+            valueText.color = textColor;
+        }
+    }
+}
