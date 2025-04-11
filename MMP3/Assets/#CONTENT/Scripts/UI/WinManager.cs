@@ -38,15 +38,15 @@ public class WinManager : MonoBehaviour
 
     }
 
-    void Update()
+    void Update() //ToDO: new input system
     {
         if (!inputEnabled) return;
 
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            ToggleCanvasGroup(_lockScreenCanvasGroup, false);
-            ToggleCanvasGroup(_yourScoreCanvasGroup, true);
-        }
+        // if (Input.GetKeyDown(KeyCode.F))
+        // {
+        //     ToggleCanvasGroup(_lockScreenCanvasGroup, false);
+        //     ToggleCanvasGroup(_yourScoreCanvasGroup, true);
+        // }
     }
 
     public void EnableInput()

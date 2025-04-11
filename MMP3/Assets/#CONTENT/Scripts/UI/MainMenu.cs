@@ -1,13 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.TextCore.Text;
 public class MainMenu : MonoBehaviour
 {
 
     [SerializeField] private CinemachineVirtualCamera mainMenuCam;
     [SerializeField] private CinemachineVirtualCamera optionsCam;
+
+    [SerializeField] private GameObject _loadingScreen;
+    private const int _LEVEL1SCENEINDEX = 1;
 
     void Awake()
     {
@@ -15,13 +21,18 @@ public class MainMenu : MonoBehaviour
         optionsCam.Priority = 0;
     }
 
-    public void TutorialBtn()
-    {
-        SceneManager.LoadSceneAsync("Tutorial");  //TODO: Corect scene name if needed
-    }
     public void PlayBtn()
     {
-        SceneManager.LoadSceneAsync("Game"); //TODO: Corect scene name if needed
+        // SceneManager.LoadSceneAsync(_LEVEL1SCENEINDEX); //TODO: Corect scene name if needed
+        StartCoroutine(LoadLevelWithDelay());
+    }
+
+    private IEnumerator LoadLevelWithDelay()
+    {
+        _loadingScreen.SetActive(true);
+        yield return new WaitForSeconds(2f); // Simulate loading delay
+        SceneManager.LoadScene(_LEVEL1SCENEINDEX);
+
     }
 
     public void OptionsBtn()

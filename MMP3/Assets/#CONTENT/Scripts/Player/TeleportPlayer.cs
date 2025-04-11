@@ -8,7 +8,7 @@ public class TeleportPlayer : MonoBehaviour
 {
     [SerializeField] private List<GameObject> _players = new List<GameObject>();
     [SerializeField] private int _neededPlayers;
-    private const int _CITYSCENEINDEX = 1;
+    private const int _CITYSCENEINDEX = 2;
     public GameObject _playerPrefab1;
     public GameObject _playerPrefab2;
 

@@ -12,9 +12,9 @@ EditorBuildSettings:
     path: Assets/#CONTENT/Scenes/MainGame/MainMenu.unity
     guid: ee0af2522481c6b42963d904094d42b9
   - enabled: 1
-    path: Assets/#CONTENT/Scenes/MainGame/City.unity
-    guid: f72e4b9623407ef4bbc4212cd0522370
-  - enabled: 1
     path: Assets/#CONTENT/Scenes/Prototyp/Isa_Prototyp.unity
     guid: e7f0b03c202d25444945625ba34d98f0
+  - enabled: 1
+    path: Assets/#CONTENT/Scenes/MainGame/City.unity
+    guid: f72e4b9623407ef4bbc4212cd0522370
   m_configObjects: {}
