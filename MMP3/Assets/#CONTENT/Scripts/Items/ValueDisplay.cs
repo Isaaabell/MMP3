@@ -8,7 +8,7 @@ using TMPro.EditorUtilities;
 public class ValueDisplay : MonoBehaviour
 {
     [Header("Display Settings")]
-    public int itemValue = 100;
+    [HideInInspector] public int itemValue;
     public string currencySymbol = "$";
     public float minDisplayDistance = 2f;
     public float maxDisplayDistance = 10f;
