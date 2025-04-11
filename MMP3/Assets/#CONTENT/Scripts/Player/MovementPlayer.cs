@@ -21,9 +21,10 @@ public class MovementPlayer : MonoBehaviour
 
     // Speed modification properties
     private float speedModifier = 1.0f;
+
     [Header("Jumping")]
-    public float jumpHeight = 1.5f;
-    public float gravity = -9.81f;
+    private float jumpHeight = 1.2f;
+    private float gravity = -15.81f;
     private float verticalVelocity;
     private bool isGrounded;
 
