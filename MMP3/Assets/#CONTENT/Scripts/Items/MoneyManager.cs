@@ -9,21 +9,21 @@ public class MoneyManager : MonoBehaviour
 
     [Header("Money")]
     public int totalMoney = 0;
-    
+
     [Header("UI")]
     public TextMeshProUGUI moneyText;
     public string currencySymbol = "$";
-    
+
     [Header("Effects")]
     public bool animateMoneyChange = true;
     public float animationDuration = 0.5f;
-    
+
     // Private variables for animation
     private int displayedMoney = 0;
     private int targetMoney = 0;
     private float animationStartTime = 0f;
     private bool isAnimating = false;
-    
+
     private void Awake()
     {
         // Simple singleton setup
@@ -36,14 +36,14 @@ public class MoneyManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        
+
         // Initialize values
         displayedMoney = totalMoney;
         targetMoney = totalMoney;
-        
+
         UpdateMoneyDisplay();
     }
-    
+
     private void Update()
     {
         // Animate money change if needed
@@ -51,7 +51,7 @@ public class MoneyManager : MonoBehaviour
         {
             float elapsed = Time.time - animationStartTime;
             float progress = Mathf.Clamp01(elapsed / animationDuration);
-            
+
             if (progress >= 1.0f)
             {
                 // Animation complete
@@ -63,16 +63,16 @@ public class MoneyManager : MonoBehaviour
                 // Interpolate for smooth counting effect
                 displayedMoney = Mathf.RoundToInt(Mathf.Lerp(displayedMoney, targetMoney, progress));
             }
-            
+
             UpdateMoneyText();
         }
     }
-    
+
     public void AddMoney(int amount)
     {
         // Update the actual total immediately
         totalMoney += amount;
-        
+
         if (animateMoneyChange && amount > 0)
         {
             // Setup for animated counting
@@ -85,17 +85,17 @@ public class MoneyManager : MonoBehaviour
             // No animation, update immediately
             displayedMoney = totalMoney;
         }
-        
+
         UpdateMoneyDisplay();
         Debug.Log("Added " + currencySymbol + amount + ". Total: " + currencySymbol + totalMoney);
     }
-    
+
     public bool SpendMoney(int amount)
     {
         if (totalMoney >= amount)
         {
             totalMoney -= amount;
-            
+
             if (animateMoneyChange)
             {
                 // Setup for animated counting down
@@ -108,13 +108,13 @@ public class MoneyManager : MonoBehaviour
                 // No animation, update immediately
                 displayedMoney = totalMoney;
             }
-            
+
             UpdateMoneyDisplay();
             return true;
         }
         return false;
     }
-    
+
     private void UpdateMoneyDisplay()
     {
         // Update the actual displayed UI text
@@ -132,7 +132,7 @@ public class MoneyManager : MonoBehaviour
             }
         }
     }
-    
+
     private void UpdateMoneyText()
     {
         if (moneyText != null)
@@ -140,16 +140,33 @@ public class MoneyManager : MonoBehaviour
             moneyText.text = currencySymbol + displayedMoney.ToString();
         }
     }
-    
+
     // Helper to get the current displayed money (useful for UI)
     public int GetDisplayedMoney()
     {
         return displayedMoney;
     }
-    
+
     // Helper to get the actual total money
     public int GetTotalMoney()
     {
         return totalMoney;
+    }
+    
+    // Add this method to the MoneyManager class after the GetTotalMoney() method
+
+    // Set the total money (used when loading from saved data)
+    public void SetTotalMoney(int amount)
+    {
+        totalMoney = amount;
+        
+        // Also update display values
+        displayedMoney = totalMoney;
+        targetMoney = totalMoney;
+        
+        // Update the UI
+        UpdateMoneyDisplay();
+        
+        Debug.Log("Money set to " + currencySymbol + totalMoney + " from saved data");
     }
 }

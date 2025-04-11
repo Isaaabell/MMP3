@@ -29,6 +29,7 @@ public class MainMenu : MonoBehaviour
 
     private IEnumerator LoadLevelWithDelay()
     {
+        OnNewGameButtonClicked(); // Call the method to reset score
         _loadingScreen.SetActive(true);
         yield return new WaitForSeconds(2f); // Simulate loading delay
         SceneManager.LoadScene(_LEVEL1SCENEINDEX);
@@ -53,4 +54,14 @@ public class MainMenu : MonoBehaviour
         Application.Quit();
 #endif
     }
+
+    public void OnNewGameButtonClicked()
+{
+    // Find the ScoreSaver and reset score
+    ScoreSaver scoreSaver = FindObjectOfType<ScoreSaver>();
+    if (scoreSaver != null)
+    {
+        scoreSaver.NewGame();
+    }
+}
 }
