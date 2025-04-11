@@ -8,7 +8,7 @@ public class TeleportPlayer : MonoBehaviour
 {
     [SerializeField] private List<GameObject> _players = new List<GameObject>();
     [SerializeField] private int _neededPlayers;
-    private const int _CITYSCENEINDEX = 2;
+    [SerializeField] private int _SCENEINDEX = 2;
     public GameObject _playerPrefab1;
     public GameObject _playerPrefab2;
 
@@ -113,7 +113,7 @@ public class TeleportPlayer : MonoBehaviour
             SceneManager.sceneLoaded -= OnSceneLoaded; // Clean up the event subscription
         }
 
-        SceneManager.LoadSceneAsync(_CITYSCENEINDEX);
+        SceneManager.LoadSceneAsync(_SCENEINDEX);
     }
 
 }
