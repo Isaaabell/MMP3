@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 314596860718047987}
   - component: {fileID: 1632195232164928744}
   - component: {fileID: 1194345783054326066}
+  - component: {fileID: -7038449216238488374}
   m_Layer: 0
   m_Name: Vehicle_Police Car_separate
   m_TagString: Untagged
@@ -126,10 +127,26 @@ MonoBehaviour:
   detectionRadius: 15
   minPatrolDistance: 20
   maxPatrolDistance: 40
+  patrolTimeout: 30
   patrolSpeed: 8
   pursuitSpeed: 12
   rotationSpeed: 2
   waypointThreshold: 2
+--- !u!114 &-7038449216238488374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603979246460893993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10ba89994b2eaad41b2dea7ff888c607, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionRadius: 8
+  gameOverSceneName: GameOver
+  requiredTimeInRadius: 5
 --- !u!1 &2503982173217191549
 GameObject:
   m_ObjectHideFlags: 0
