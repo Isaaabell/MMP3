@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/#CONTENT/Scenes/MainGame/City.unity
     guid: f72e4b9623407ef4bbc4212cd0522370
+  - enabled: 1
+    path: Assets/#CONTENT/Scenes/Prototyp/MoneyTest_Prototyp.unity
+    guid: 8bbfcf7dbf622514bbd6ae3c6d9942b6
   m_configObjects: {}
