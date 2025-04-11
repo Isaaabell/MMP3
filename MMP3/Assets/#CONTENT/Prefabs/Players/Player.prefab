@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 3774767651478434944}
   - component: {fileID: 4004868470480193890}
   - component: {fileID: 1889443560745526491}
-  - component: {fileID: 415909804435039132}
   - component: {fileID: 3332982083871702109}
   - component: {fileID: 4936410605871305217}
+  - component: {fileID: 2861300986105364385}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -106,7 +106,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Height: 2
@@ -237,42 +237,11 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 0a53c5a4-a385-4868-9c85-3b66dba256e1
     m_ActionName: CarMovement/Brake[/DualSenseGamepadHID/rightShoulder,/Keyboard/space]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 013cc0f2-07bb-4f2d-8aff-3e561310d74a
-    m_ActionName: CarMovement/Throttle
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerMovement
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 298623271416357061}
---- !u!54 &415909804435039132
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1708217113406029415}
-  serializedVersion: 4
-  m_Mass: 60
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 112
-  m_CollisionDetection: 0
 --- !u!114 &3332982083871702109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,6 +256,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseSpeed: 5
   isGrabbing: 0
+  jumpHeight: 1.5
+  gravity: -9.81
   cameraTransform: {fileID: 0}
 --- !u!114 &4936410605871305217
 MonoBehaviour:
@@ -303,6 +274,32 @@ MonoBehaviour:
   cameraTransform: {fileID: 4158716423514727154}
   objectGrabPointTransform: {fileID: 5617927046496573027}
   pickupDistance: 2
+--- !u!143 &2861300986105364385
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1708217113406029415}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7113677343850708166
 GameObject:
   m_ObjectHideFlags: 0

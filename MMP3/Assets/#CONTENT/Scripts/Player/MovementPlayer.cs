@@ -9,6 +9,7 @@ public class MovementPlayer : MonoBehaviour
     public float baseSpeed = 5f;
     private float currentSpeed;
     private float lookSensitivity = 4f;
+    private CharacterController controller;
     private Rigidbody rb;
     private Vector2 moveInput;
     private Vector2 lookInput;
@@ -20,6 +21,11 @@ public class MovementPlayer : MonoBehaviour
 
     // Speed modification properties
     private float speedModifier = 1.0f;
+    [Header("Jumping")]
+    public float jumpHeight = 1.5f;
+    public float gravity = -9.81f;
+    private float verticalVelocity;
+    private bool isGrounded;
 
     [Header("Camera")]
     public Transform cameraTransform;  // Assign the camera child in inspector
@@ -30,7 +36,8 @@ public class MovementPlayer : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        rb = GetComponent<Rigidbody>();
+        // rb = GetComponent<Rigidbody>();
+        controller = GetComponent<CharacterController>();
 
         // Initialize current speed
         currentSpeed = baseSpeed;
@@ -54,17 +61,26 @@ public class MovementPlayer : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Move based on input, using the currentSpeed which might be modified
+        // Handle gravity
+        isGrounded = controller.isGrounded;
+        if (isGrounded && verticalVelocity < 0)
+        {
+            verticalVelocity = -2f; // small negative to keep grounded
+        }
+
         Vector3 move = transform.forward * moveInput.y + transform.right * moveInput.x;
-        rb.MovePosition(rb.position + move * currentSpeed * Time.fixedDeltaTime);
-        // Rotate player horizontally
+        controller.Move(move * currentSpeed * Time.deltaTime);
+
+        // Apply vertical movement
+        verticalVelocity += gravity * Time.deltaTime;
+        controller.Move(Vector3.up * verticalVelocity * Time.deltaTime);
+
+        // Rotate player
         transform.Rotate(Vector3.up * lookInput.x * lookSensitivity);
 
-        // Rotate camera vertically
+        // Rotate camera
         cameraPitch -= lookInput.y * lookSensitivity;
         cameraPitch = Mathf.Clamp(cameraPitch, -80f, 80f);
-
-        // Apply camera rotation
         if (cameraTransform != null)
         {
             cameraTransform.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
@@ -119,9 +135,9 @@ public class MovementPlayer : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (IsGrounded())
+        if (context.performed && isGrounded)
         {
-            rb.AddForce(Vector3.up * 120, ForceMode.Impulse);
+            verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
     }
 
